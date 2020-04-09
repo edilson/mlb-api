@@ -43,4 +43,30 @@ module.exports = {
 
     return response.json(teams);
   },
+  async update(request, response) {
+    const { id } = request.params;
+
+    await connection('team').where('id', id).update(request.body);
+
+    const updated_team = await connection('team')
+      .where('id', id)
+      .select('*')
+      .first();
+
+    return response.json(updated_team);
+  },
+  async delete(request, response) {
+    const { id } = request.params;
+
+    await connection('team').where('id', id).delete();
+
+    return response.status(204).send();
+  },
+  async findById(request, response) {
+    const { id } = request.params;
+
+    const team = await connection('team').where('id', id).select('*').first();
+
+    return response.json(team);
+  },
 };

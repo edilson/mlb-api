@@ -28,5 +28,32 @@ routes.get(
   }),
   TeamController.list
 );
+routes.get(
+  '/v1/teams/:id',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      id: Joi.string().required(),
+    }),
+  }),
+  TeamController.findById
+);
+routes.put(
+  '/v1/teams/:id',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      id: Joi.string().required(),
+    }),
+  }),
+  TeamController.update
+);
+routes.delete(
+  '/v1/teams/:id',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      id: Joi.string().required(),
+    }),
+  }),
+  TeamController.delete
+);
 
 module.exports = routes;
