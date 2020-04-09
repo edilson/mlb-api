@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mlb
+      PGDATA: /data/postgres
+    ports:
+      - 5432:5432
+    # volumes:
+    #   - mlb-volume:/data/postgres
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
