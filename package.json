@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server.js",
-    "test": "cross-env NODE_ENV=test mocha --exit"
+    "test": "cross-env NODE_ENV=test mocha --exit",
+    "start": "node server.js",
+    "heroku-postbuild": "npx knex migrate:latest"
   },
   "author": "Edilson Silva",
   "license": "ISC",
