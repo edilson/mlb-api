@@ -3,21 +3,18 @@ jobs:
   build:
     docker:
       - image: circleci/node:12
-      - image: circleci/postgres:latest
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: mlb
     working_directory: ~/mlb-api
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-      - run: npm install
+      - run: docker-compose up -d
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm test
+      - run: docker-compose run app npm test
