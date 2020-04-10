@@ -43,6 +43,14 @@ routes.put(
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().required(),
     }),
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string(),
+      established_in: Joi.number().integer().min(1871),
+      league: Joi.string().length(15),
+      division: Joi.string().min(13).max(17),
+      logo: Joi.string(),
+      number_of_titles: Joi.number().integer(),
+    }),
   }),
   TeamController.update
 );

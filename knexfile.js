@@ -4,7 +4,7 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      host: 'localhost',
+      host: 'db',
       user: 'postgres',
       password: 'postgres',
       database: 'mlb',
@@ -17,7 +17,12 @@ module.exports = {
 
   test: {
     client: 'postgresql',
-    connection: 'postgres://postgres:postgres@db_test:5432/mlb_test',
+    connection: {
+      database: 'mlb_test',
+      host: 'db_test',
+      user: 'postgres',
+      password: 'postgres',
+    },
     migrations: {
       directory: './src/database/migrations',
     },
