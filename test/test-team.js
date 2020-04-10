@@ -98,6 +98,7 @@ describe('Teams', () => {
         .end((request, response) => {
           expect(response.status).to.equal(200);
           expect(response.body).is.an('array');
+          expect(response.header).have.property('x-total-count');
           expect(response.body[0]).have.property('id');
           expect(response.body[0]).have.property('name');
           expect(response.body[0]).have.property('logo');

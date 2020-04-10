@@ -1,6 +1,8 @@
-const crypto = require('crypto');
-
 const connection = require('../database/connection');
+const generateUniqueId = require('../utils/generateUniqueId');
+
+const TEAM_TABLE = 'team';
+const LIMIT_PER_PAGE = 10;
 
 module.exports = {
   async create(request, response) {
@@ -13,9 +15,9 @@ module.exports = {
       number_of_titles,
     } = request.body;
 
-    const id = crypto.randomBytes(4).toString('HEX');
+    const id = generateUniqueId();
 
-    await connection('team').insert({
+    await connection(TEAM_TABLE).insert({
       id,
       name,
       established_in,
@@ -32,12 +34,12 @@ module.exports = {
   async list(request, response) {
     const { page = 1 } = request.query;
 
-    const [count] = await connection('team').count();
+    const [count] = await connection(TEAM_TABLE).count();
 
-    const teams = await connection('team')
+    const teams = await connection(TEAM_TABLE)
       .select(['id', 'name', 'logo'])
-      .limit(10)
-      .offset((page - 1) * 10);
+      .limit(LIMIT_PER_PAGE)
+      .offset((page - 1) * LIMIT_PER_PAGE);
 
     response.header('X-Total-Count', count['count']);
 
@@ -46,9 +48,9 @@ module.exports = {
   async update(request, response) {
     const { id } = request.params;
 
-    await connection('team').where('id', id).update(request.body);
+    await connection(TEAM_TABLE).where('id', id).update(request.body);
 
-    const updated_team = await connection('team')
+    const updated_team = await connection(TEAM_TABLE)
       .where('id', id)
       .select('*')
       .first();
@@ -58,14 +60,17 @@ module.exports = {
   async delete(request, response) {
     const { id } = request.params;
 
-    await connection('team').where('id', id).delete();
+    await connection(TEAM_TABLE).where('id', id).delete();
 
     return response.status(204).send();
   },
   async findById(request, response) {
     const { id } = request.params;
 
-    const team = await connection('team').where('id', id).select('*').first();
+    const team = await connection(TEAM_TABLE)
+      .where('id', id)
+      .select('*')
+      .first();
 
     if (team.id != id) {
       return response
