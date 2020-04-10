@@ -9,7 +9,7 @@ COPY package*.json /usr/src/
 
 RUN npm install
 
-COPY . /usr/src/
+COPY ./ /usr/src/
 
 EXPOSE 3333
 CMD ["npm", "run", "dev"]
