@@ -17,9 +17,7 @@ module.exports = {
 
   test: {
     client: 'postgresql',
-    connection: {
-      filename: './src/database/test.sqlite',
-    },
+    connection: 'postgres://postgres:postgres@db_test:5432/mlb_test',
     migrations: {
       directory: './src/database/migrations',
     },
