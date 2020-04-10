@@ -139,6 +139,19 @@ describe('Teams', () => {
             });
         });
     });
+
+    // it('Test find team with invalid id should return 404', (done) => {
+    //   chai
+    //     .request(server)
+    //     .get('/v1/teams/edw321')
+    //     .end((request, response) => {
+    //       expect(response.status).to.equal(404);
+    //       expect(response.body.message).to.equal(
+    //         `Team with provided id doesn't exist.`
+    //       );
+    //       done();
+    //     });
+    // });
   });
 
   describe('Update team', () => {
