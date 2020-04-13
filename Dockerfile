@@ -1,11 +1,11 @@
 FROM node:12
 
 WORKDIR /usr/src
-RUN npm install nodemon \
-    cross-env \
-    mocha \
-    chai \
-    chai-http -g
+RUN npm install -g nodemon \
+  cross-env \
+  mocha \
+  chai \
+  chai-http
 
 COPY package*.json ./
 
