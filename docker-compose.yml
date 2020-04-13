@@ -9,6 +9,7 @@ services:
       - 3333:3333
     volumes:
       - ./node_modules:/usr/src/node_modules
+      - ./:/usr/src
     depends_on:
       - db
       - db_test
