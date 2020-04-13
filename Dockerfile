@@ -3,7 +3,7 @@ FROM node:12
 RUN npm install -g nodemon
 WORKDIR /usr/src
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm install
 
