@@ -1,7 +1,7 @@
 FROM node:12
 
 WORKDIR /usr/src
-RUN npm install -g nodemon && npm install -g cross-env
+RUN npm install -g nodemon && npm install -g cross-env && npm install -g mocha
 
 COPY package*.json ./
 
