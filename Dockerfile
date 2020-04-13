@@ -1,12 +1,9 @@
 FROM node:12
 
-USER root
 WORKDIR /usr/src
-RUN npm install -g nodemon \
-  cross-env \
-  mocha \
-  chai \
-  chai-http
+
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
 
 COPY package*.json ./
 
