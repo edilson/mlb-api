@@ -11,7 +11,7 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-      - run: docker-compose up -d --build
+      - run: docker-compose up -d
       - save_cache:
           paths:
             - node_modules
