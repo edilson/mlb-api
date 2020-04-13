@@ -7,8 +7,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: sudo chown -R circleci:circleci /usr/local/lib
-      - run: npm install -g chai chai-http
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}

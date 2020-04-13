@@ -1,5 +1,6 @@
 FROM node:12
 
+USER root
 WORKDIR /usr/src
 RUN npm install -g nodemon \
   cross-env \
