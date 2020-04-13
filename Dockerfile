@@ -1,7 +1,7 @@
 FROM node:12
 
-RUN npm install -g nodemon
 WORKDIR /usr/src
+RUN npm install -g nodemon
 
 COPY package*.json ./
 

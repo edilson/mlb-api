@@ -8,7 +8,6 @@ services:
     ports:
       - 3333:3333
     volumes:
-      - .:/usr/src
       - ./node_modules:/usr/src/node_modules
     depends_on:
       - db
