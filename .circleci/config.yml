@@ -11,9 +11,32 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-      - run: docker-compose up -d
+      - run:
+          name: Install dependencies
+          command: docker-compose up -d
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: docker-compose run app npm test
+      - run:
+          name: Run tests
+          command: docker-compose run app npm test
+  deploy:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - $CIRCLE_CI_FINGERPRINTS
+      - run:
+          name: Deploy to Heroku
+          command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+
+workflows:
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
