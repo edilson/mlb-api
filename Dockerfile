@@ -5,7 +5,7 @@ WORKDIR /usr/app
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
-ADD package.json /usr/app/package.json
+RUN cp package.json /usr/app/package.json
 
 RUN npm install
 
