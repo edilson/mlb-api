@@ -1,0 +1,173 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "MLB API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3333",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "Teams",
+      "description": "API for the MLB"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/teams": {
+      "post": {
+        "tags": [
+          "Teams"
+        ],
+        "description": "Create new team in system",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "body",
+            "description": "Team that we want to create",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New Team is created",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Teams"
+        ],
+        "summary": "Get all teams in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Teams"
+            }
+          }
+        }
+      }
+    },
+    "/teams/{teamId}": {
+      "parameters": [
+        {
+          "name": "teamId",
+          "in": "path",
+          "required": true,
+          "description": "ID of team that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Teams"
+        ],
+        "summary": "Get team with given ID",
+        "responses": {
+          "200": {
+            "description": "Team found",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete team with given ID",
+        "tags": [
+          "Teams"
+        ],
+        "responses": {
+          "200": {
+            "description": "Team deleted",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update team with give ID",
+        "tags": [
+          "Teams"
+        ],
+        "parameters": [
+          {
+            "name": "team",
+            "in": "body",
+            "description": "Team with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team updated",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Team": {
+      "required": [
+        "id",
+        "name",
+        "established_in",
+        "league",
+        "division",
+        "logo",
+        "number_of_titles"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "established_in": {
+          "type": "integer"
+        },
+        "league": {
+          "type": "string"
+        },
+        "division": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "number_of_titles": {
+          "type": "integer"
+        }
+      }
+    },
+    "Teams": {
+      "type": "array",
+      "$ref": "#/definitions/Team"
+    }
+  }
+}

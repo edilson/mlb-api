@@ -4,7 +4,7 @@
   "description": "MLB api",
   "main": "server.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "dev": "cross-env NODE_ENV=development nodemon -L server.js",
     "test": "cross-env NODE_ENV=test mocha --exit",
     "start": "node server.js",
     "heroku-postbuild": "npx knex migrate:latest"
@@ -15,7 +15,8 @@
     "celebrate": "^12.0.1",
     "express": "^4.17.1",
     "knex": "^0.20.13",
-    "pg": "^8.0.0"
+    "pg": "^8.0.0",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",

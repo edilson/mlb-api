@@ -1,9 +1,14 @@
 const express = require('express');
 const { celebrate, Segments, Joi } = require('celebrate');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.json');
 
 const TeamController = require('./controllers/TeamController');
 
 const routes = express.Router();
+
+routes.use('/', swaggerUi.serve);
+routes.get('/', swaggerUi.setup(swaggerDocument));
 
 routes.post(
   '/v1/teams',
