@@ -5,11 +5,11 @@ WORKDIR /usr/app
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
-COPY package*.json ./
+COPY package*.json /usr/app/
 
 RUN npm install
 
-COPY . .
+COPY . /usr/app/
 
 EXPOSE 3333
 CMD ["npm", "run", "dev"]
