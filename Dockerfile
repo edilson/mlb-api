@@ -5,7 +5,7 @@ WORKDIR /usr/app
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
-ADD . /usr/app/
+COPY ./ /usr/app/
 
 RUN npm install
 
