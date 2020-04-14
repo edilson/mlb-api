@@ -5,11 +5,9 @@ WORKDIR /usr/app
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
-RUN cp package.json /usr/app/package.json
+ADD . /usr/app/
 
 RUN npm install
-
-ADD . /usr/app/
 
 EXPOSE 3333
 CMD ["npm", "run", "dev"]
