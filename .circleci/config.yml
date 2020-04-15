@@ -13,16 +13,14 @@ jobs:
             - v1-dependencies-
       - run:
           name: Install dependencies
-          command: docker-compose up -d
+          command: npm install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: Run tests
-          command: |
-            docker-compose run app ls
-            docker-compose run app npm test
+          command: npm test
   deploy:
     docker:
       - image: circleci/node:12
