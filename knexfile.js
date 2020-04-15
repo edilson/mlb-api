@@ -19,7 +19,7 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: 'mlb_test',
-      host: 'db_test',
+      host: 'localhost',
       user: 'postgres',
       password: 'postgres',
     },
