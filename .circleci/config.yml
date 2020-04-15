@@ -3,10 +3,14 @@ jobs:
   build:
     docker:
       - image: circleci/node:12
+      - image: circleci/postgres:latest
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mlb_test
     working_directory: ~/mlb-api
     steps:
       - checkout
-      - setup_remote_docker
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
