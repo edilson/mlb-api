@@ -13,7 +13,7 @@ This project uses:
 - [ExpressJS](https://expressjs.com)
 - [Knex](http://knexjs.org/)
 - [PostgreSQL](https://www.postgresql.org/)
-- [Docker & Docker Compose]
+- Docker & Docker Compose
 
 ## :rocket: Running
 
