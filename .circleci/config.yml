@@ -30,7 +30,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - $CIRCLE_CI_FINGERPRINTS
+            - "f9:e8:59:5d:ee:de:02:ce:fc:5a:f7:54:8e:94:11:44"
       - run:
           name: Deploy to Heroku
           command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
