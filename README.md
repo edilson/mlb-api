@@ -51,7 +51,7 @@ http://localhost:3333
 6 - Run tests:
 
 ```
-docker-compose run app npm test
+make test
 ```
 
 ## License
