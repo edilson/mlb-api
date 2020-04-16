@@ -1,7 +1,7 @@
 const express = require('express');
 const { celebrate, Segments, Joi } = require('celebrate');
 
-const TeamController = require('./controllers/TeamController');
+const TeamController = require('../controllers/TeamController');
 
 const routes = express.Router();
 

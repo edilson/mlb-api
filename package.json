@@ -12,6 +12,7 @@
   "author": "Edilson Silva",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "celebrate": "^12.0.1",
     "express": "^4.17.1",
     "knex": "^0.20.13",
