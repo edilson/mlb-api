@@ -72,12 +72,6 @@ module.exports = {
       .select('*')
       .first();
 
-    if (team.id != id) {
-      return response
-        .status(404)
-        .json({ message: `Team with provided id doesn't exist.` });
-    }
-
     return response.json(team);
   },
 };

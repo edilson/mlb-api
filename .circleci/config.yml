@@ -12,7 +12,7 @@ jobs:
             - v1-dependencies-
       - run:
           name: Update npm
-          command: npm install -g npm@latest
+          command: sudo npm install -g npm@latest
       - run:
           name: Install dependencies
           command: npm install
