@@ -24,31 +24,37 @@ git clone https://github.com/SEdilson/mlb-api.git
 cd mlb-api
 ```
 
-2 - Install dependencies:
+2 - Copy .env.example to .env:
+
+```
+cp .env.example .env
+```
+
+3 - Install dependencies:
 
 ```
 npm install
 ```
 
-3 - Run the app:
+4 - Run the app:
 
 ```
 make run
 ```
 
-4 - Run the migrations:
+5 - Run the migrations:
 
 ```
 make migrate
 ```
 
-5 - Go to:
+6 - Go to:
 
 ```
 http://localhost:3333
 ```
 
-6 - Run tests:
+7 - Run tests:
 
 ```
 make test
@@ -56,4 +62,4 @@ make test
 
 ## License
 
-This project is under the [MIT](LICENSE).
+This project is under the [MIT](LICENSE) license.
