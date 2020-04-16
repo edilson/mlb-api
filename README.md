@@ -33,13 +33,13 @@ npm install
 3 - Run the app:
 
 ```
-docker-compose up
+make run
 ```
 
 4 - Run the migrations:
 
 ```
-docker-compose run app npx knex migrate:latest
+make migrate
 ```
 
 5 - Go to:
