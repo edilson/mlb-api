@@ -3,11 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/node:12
-      - image: circleci/postgres:latest
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: mlb_test
     working_directory: ~/mlb-api
     steps:
       - checkout
@@ -15,6 +10,9 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
+      - run:
+          name: Update npm
+          command: npm install -g npm@latest
       - run:
           name: Install dependencies
           command: npm install

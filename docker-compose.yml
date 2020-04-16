@@ -11,7 +11,6 @@ services:
       - /usr/app/node_modules
     depends_on:
       - db
-      - db_test
 
   db:
     image: postgres:latest
@@ -22,13 +21,8 @@ services:
       PGDATA: /data/postgres
     volumes:
       - mlb:/data/postgres
-
-  db_test:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mlb_test
+    ports:
+      - 5432:5432
 
   adminer:
     image: adminer

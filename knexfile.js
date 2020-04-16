@@ -16,12 +16,9 @@ module.exports = {
   },
 
   test: {
-    client: 'postgresql',
+    client: 'sqlite3',
     connection: {
-      database: 'mlb_test',
-      host: 'localhost',
-      user: 'postgres',
-      password: 'postgres',
+      filename: './src/database/test.sqlite',
     },
     migrations: {
       directory: './src/database/migrations',
