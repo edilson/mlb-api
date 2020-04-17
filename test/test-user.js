@@ -11,20 +11,6 @@ describe('Users', () => {
   beforeEach(async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
-
-    const first_user = {
-      name: 'Edilson Silva',
-      email: 'edilson.silva@hotmail.com',
-      password: '123ab',
-    };
-
-    const { name, email, password } = first_user;
-
-    await connection('user').insert({
-      name,
-      email,
-      password,
-    });
   });
 
   afterEach(async () => {

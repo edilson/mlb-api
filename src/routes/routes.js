@@ -7,8 +7,10 @@ const UserController = require('../controllers/UserController');
 const LoginController = require('../controllers/LoginController');
 
 const teamRoutes = require('./team-routes');
+const venueRoutes = require('./venue-routes');
 
 routes.use(teamRoutes);
+routes.use(venueRoutes);
 
 routes.post(
   '/v1/register',
