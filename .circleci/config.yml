@@ -26,6 +26,9 @@ jobs:
       - run:
           name: Move Test Results
           command: mkdir -p test-results/mocha && cp test-results.xml test-results/mocha/results.xml
+      - store_artifacts:
+          path: test-results.xml
+          prefix: tests
       - store_test_results:
           path: test-results
   deploy:
