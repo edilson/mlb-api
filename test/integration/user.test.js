@@ -2,8 +2,8 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 
-const connection = require('../src/database/connection');
-const server = require('../server');
+const connection = require('../../src/database/connection');
+const server = require('../../server');
 
 chai.use(chaiHttp);
 
