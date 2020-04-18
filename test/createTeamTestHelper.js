@@ -4,7 +4,7 @@ const generateUniqueId = require('../src/utils/generateUniqueId');
 module.exports = async () => {
   const id = generateUniqueId();
 
-  const first_team = {
+  const firstTeam = {
     name: 'test-team1',
     established_in: 1899,
     league: 'testing league1',
@@ -20,7 +20,7 @@ module.exports = async () => {
     division,
     logo,
     number_of_titles,
-  } = first_team;
+  } = firstTeam;
 
   await connection('team').insert({
     id,
@@ -32,10 +32,10 @@ module.exports = async () => {
     number_of_titles,
   });
 
-  const created_team = await connection('team')
+  const createdTeam = await connection('team')
     .where('id', id)
     .select('*')
     .first();
 
-  return created_team;
+  return createdTeam;
 };

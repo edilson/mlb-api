@@ -24,7 +24,7 @@ describe('Users', () => {
       password: '123ro',
     };
 
-    const invalid_payload = {
+    const invalidPayload = {
       name: 'Ju',
       email: 'ju@hotmail.com',
       password: '123ml',
@@ -47,7 +47,7 @@ describe('Users', () => {
       chai
         .request(server)
         .post('/v1/register')
-        .send(invalid_payload)
+        .send(invalidPayload)
         .end((request, response) => {
           expect(response.status).to.equal(400);
           expect(response.body.message).to.equal(

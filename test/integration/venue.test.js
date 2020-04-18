@@ -5,6 +5,7 @@ const expect = require('chai').expect;
 const connection = require('../../src/database/connection');
 const server = require('../../server');
 const createTeamTestHelper = require('../createTeamTestHelper');
+const createVenueTestHelper = require('../createVenueTestHelper');
 
 chai.use(chaiHttp);
 
@@ -13,26 +14,10 @@ describe('Venues', () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
 
-    const first_team = await createTeamTestHelper();
+    const firstTeam = await createTeamTestHelper();
     await createTeamTestHelper();
 
-    const first_venue = {
-      name: 'awesome stadium',
-      opened: 1955,
-      capacity: 39590,
-      location: 'some awesome',
-      team_id: first_team.id,
-    };
-
-    const { name, opened, capacity, location, team_id } = first_venue;
-
-    await connection('venue').insert({
-      name,
-      opened,
-      capacity,
-      location,
-      team_id,
-    });
+    await createVenueTestHelper(firstTeam.id);
   });
 
   afterEach(async () => {
@@ -68,7 +53,7 @@ describe('Venues', () => {
     });
 
     it('Test create venue with invalid data should return 400', (done) => {
-      const invalid_payload = {
+      const invalidPayload = {
         name: 'test stadium',
         opened: 1905,
         capacity: 30590,
@@ -78,7 +63,7 @@ describe('Venues', () => {
       chai
         .request(server)
         .post('/v1/venues')
-        .send(invalid_payload)
+        .send(invalidPayload)
         .end((request, response) => {
           expect(response.status).to.equal(400);
           done();

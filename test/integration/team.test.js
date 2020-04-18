@@ -5,6 +5,7 @@ const expect = require('chai').expect;
 const connection = require('../../src/database/connection');
 const server = require('../../server');
 const createTeamTestHelper = require('../createTeamTestHelper');
+const createVenueTestHelper = require('../createVenueTestHelper');
 
 chai.use(chaiHttp);
 
@@ -13,7 +14,8 @@ describe('Teams', () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
 
-    await createTeamTestHelper();
+    const firstTeam = await createTeamTestHelper();
+    await createVenueTestHelper(firstTeam.id);
   });
 
   afterEach(async () => {
@@ -30,7 +32,7 @@ describe('Teams', () => {
       number_of_titles: 0,
     };
 
-    const invalid_payload = {
+    const invalidPayload = {
       name: 'test-team',
       established_in: 1870,
       league: 'testing league',
@@ -54,7 +56,7 @@ describe('Teams', () => {
       chai
         .request(server)
         .post('/v1/teams')
-        .send(invalid_payload)
+        .send(invalidPayload)
         .end((request, response) => {
           expect(response.status).to.equal(400);
           done();
@@ -108,6 +110,7 @@ describe('Teams', () => {
               expect(response.body).have.property('division');
               expect(response.body).have.property('logo');
               expect(response.body).have.property('number_of_titles');
+              expect(response.body).have.property('venue');
               done();
             });
         });

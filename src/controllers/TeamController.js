@@ -72,6 +72,11 @@ module.exports = {
       .select('*')
       .first();
 
+    team.venue = await connection('venue')
+      .where('team_id', team.id)
+      .select(['id', 'name'])
+      .first();
+
     return response.json(team);
   },
 };
