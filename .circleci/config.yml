@@ -23,6 +23,11 @@ jobs:
       - run:
           name: Run tests
           command: npm test
+      - run:
+          name: Move Test Results
+          command: mkdir -p test-results/mocha && cp test-results.xml test-results/mocha/results.xml
+      - store_test_results:
+          path: test-results
   deploy:
     docker:
       - image: circleci/node:12
