@@ -31,7 +31,7 @@ module.exports = {
     const venues = await connection(VENUE_TABLE)
       .limit(LIMIT_PER_PAGE)
       .offset((page - 1) * LIMIT_PER_PAGE)
-      .select(['venue.name', 'venue.location']);
+      .select(['venue.id', 'venue.name', 'venue.location']);
 
     response.header('X-Total-Count', count['count']);
 

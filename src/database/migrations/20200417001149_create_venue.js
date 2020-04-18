@@ -3,7 +3,7 @@ exports.up = function (knex) {
     table.increments();
     table.string('name').notNullable();
     table.date('opened').notNullable();
-    table.decimal('capacity', 6, 3).notNullable();
+    table.decimal('capacity').notNullable();
     table.string('location').notNullable();
 
     table.string('team_id').notNullable().unique();

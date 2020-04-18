@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 
 const connection = require('../src/database/connection');
 const server = require('../server');
-const generateUniqueId = require('../src/utils/generateUniqueId');
+const createTeamTestHelper = require('./createTeamTestHelper');
 
 chai.use(chaiHttp);
 
@@ -13,35 +13,7 @@ describe('Teams', () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
 
-    const id = generateUniqueId();
-
-    const first_team = {
-      name: 'test-team1',
-      established_in: 1899,
-      league: 'testing league1',
-      division: 'testing division',
-      logo: 'some logo',
-      number_of_titles: 1,
-    };
-
-    const {
-      name,
-      established_in,
-      league,
-      division,
-      logo,
-      number_of_titles,
-    } = first_team;
-
-    await connection('team').insert({
-      id,
-      name,
-      established_in,
-      league,
-      division,
-      logo,
-      number_of_titles,
-    });
+    await createTeamTestHelper();
   });
 
   afterEach(async () => {
@@ -140,19 +112,6 @@ describe('Teams', () => {
             });
         });
     });
-
-    // it('Test find team with invalid id should return 404', (done) => {
-    //   chai
-    //     .request(server)
-    //     .get('/v1/teams/edw321')
-    //     .end((request, response) => {
-    //       expect(response.status).to.equal(404);
-    //       expect(response.body.message).to.equal(
-    //         `Team with provided id doesn't exist.`
-    //       );
-    //       done();
-    //     });
-    // });
   });
 
   describe('Update team', () => {
@@ -187,7 +146,7 @@ describe('Teams', () => {
         .end((request, response) => {
           chai
             .request(server)
-            .put(`/v1/teams/${response.body[0]}`)
+            .put(`/v1/teams/${response.body[0].id}`)
             .send({ name: 'first_team', established_in: 1870 })
             .end((request, response) => {
               expect(response.status).to.equal(400);
