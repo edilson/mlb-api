@@ -37,7 +37,7 @@ module.exports = {
     const [count] = await connection(TEAM_TABLE).count();
 
     const teams = await connection(TEAM_TABLE)
-      .select(['id', 'name', 'logo'])
+      .select('*')
       .limit(LIMIT_PER_PAGE)
       .offset((page - 1) * LIMIT_PER_PAGE);
 
@@ -74,7 +74,7 @@ module.exports = {
 
     team.venue = await connection('venue')
       .where('team_id', team.id)
-      .select(['id', 'name'])
+      .select('*')
       .first();
 
     return response.json(team);

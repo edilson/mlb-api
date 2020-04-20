@@ -75,7 +75,11 @@ describe('Teams', () => {
           expect(response.header).have.property('x-total-count');
           expect(response.body[0]).have.property('id');
           expect(response.body[0]).have.property('name');
+          expect(response.body[0]).have.property('established_in');
+          expect(response.body[0]).have.property('league');
+          expect(response.body[0]).have.property('division');
           expect(response.body[0]).have.property('logo');
+          expect(response.body[0]).have.property('number_of_titles');
           done();
         });
     });
