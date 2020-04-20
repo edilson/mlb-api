@@ -31,11 +31,25 @@ module.exports = {
     const venues = await connection(VENUE_TABLE)
       .limit(LIMIT_PER_PAGE)
       .offset((page - 1) * LIMIT_PER_PAGE)
-      .select(['venue.id', 'venue.name', 'venue.location']);
+      .select('*');
+
+    const venuesWithTeam = await venues.reduce(
+      (promise, element) =>
+        promise.then(async (result) =>
+          result.concat({
+            ...element,
+            team: await connection('team')
+              .where('id', element.team_id)
+              .select('*')
+              .first(),
+          })
+        ),
+      Promise.resolve([])
+    );
 
     response.header('X-Total-Count', count['count']);
 
-    return response.json(venues);
+    return response.json(venuesWithTeam);
   },
   async update(request, response) {
     const { id } = request.params;

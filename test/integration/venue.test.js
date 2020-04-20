@@ -82,7 +82,10 @@ describe('Venues', () => {
           expect(response.header).have.property('x-total-count');
           expect(response.body[0]).have.property('id');
           expect(response.body[0]).have.property('name');
+          expect(response.body[0]).have.property('opened');
+          expect(response.body[0]).have.property('capacity');
           expect(response.body[0]).have.property('location');
+          expect(response.body[0]).have.property('team');
           done();
         });
     });
