@@ -6,7 +6,7 @@ const VenueController = require('../controllers/VenueController');
 const routes = express.Router();
 
 routes.post(
-  '/v1/venues',
+  '/venues',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required().min(7),
@@ -19,7 +19,7 @@ routes.post(
   VenueController.create
 );
 routes.get(
-  '/v1/venues',
+  '/venues',
   celebrate({
     [Segments.QUERY]: Joi.object().keys({
       page: Joi.number(),
@@ -28,7 +28,7 @@ routes.get(
   VenueController.list
 );
 routes.get(
-  '/v1/venues/:id',
+  '/venues/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.number().integer().required(),
@@ -37,7 +37,7 @@ routes.get(
   VenueController.findById
 );
 routes.put(
-  '/v1/venues/:id',
+  '/venues/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.number().integer().required(),
@@ -53,7 +53,7 @@ routes.put(
   VenueController.update
 );
 routes.delete(
-  '/v1/venues/:id',
+  '/venues/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.number().integer().required(),

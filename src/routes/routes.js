@@ -13,7 +13,7 @@ routes.use(teamRoutes);
 routes.use(venueRoutes);
 
 routes.post(
-  '/v1/register',
+  '/register',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required().min(5),
@@ -23,6 +23,6 @@ routes.post(
   }),
   UserController.create
 );
-routes.post('/v1/login', LoginController.login);
+routes.post('/login', LoginController.login);
 
 module.exports = routes;

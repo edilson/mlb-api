@@ -44,7 +44,7 @@ describe('Teams', () => {
     it('Test create team should return 201', (done) => {
       chai
         .request(server)
-        .post('/v1/teams')
+        .post('/api/v1/teams')
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(201);
@@ -55,7 +55,7 @@ describe('Teams', () => {
     it('Test create team with invalid data should return 400', (done) => {
       chai
         .request(server)
-        .post('/v1/teams')
+        .post('/api/v1/teams')
         .send(invalidPayload)
         .end((request, response) => {
           expect(response.status).to.equal(400);
@@ -68,7 +68,7 @@ describe('Teams', () => {
     it('Test list team should return 200', (done) => {
       chai
         .request(server)
-        .get('/v1/teams')
+        .get('/api/v1/teams')
         .end((request, response) => {
           expect(response.status).to.equal(200);
           expect(response.body).is.an('array');
@@ -87,7 +87,7 @@ describe('Teams', () => {
     it('Test list team pagination without number should return 400', (done) => {
       chai
         .request(server)
-        .get('/v1/teams?page=n')
+        .get('/api/v1/teams?page=n')
         .end((request, response) => {
           expect(response.status).to.equal(400);
           expect(response.body.message).to.equal('"page" must be a number');
@@ -100,11 +100,11 @@ describe('Teams', () => {
     it('Test find team by id should return 200', (done) => {
       chai
         .request(server)
-        .get('/v1/teams')
+        .get('/api/v1/teams')
         .end((request, response) => {
           chai
             .request(server)
-            .get(`/v1/teams/${response.body[0].id}`)
+            .get(`/api/v1/teams/${response.body[0].id}`)
             .end((request, response) => {
               expect(response.status).to.equal(200);
               expect(response.body).have.property('id');
@@ -125,12 +125,12 @@ describe('Teams', () => {
     it('Test update team should return 200', (done) => {
       chai
         .request(server)
-        .get('/v1/teams')
+        .get('/api/v1/teams')
         .end((request, response) => {
           expect(response.body[0].name).is.not.equal('first_team');
           chai
             .request(server)
-            .put(`/v1/teams/${response.body[0].id}`)
+            .put(`/api/v1/teams/${response.body[0].id}`)
             .send({ name: 'first_team' })
             .end((request, response) => {
               expect(response.status).to.equal(200);
@@ -149,11 +149,11 @@ describe('Teams', () => {
     it('Test update team with invalid data should return 400', (done) => {
       chai
         .request(server)
-        .get('/v1/teams')
+        .get('/api/v1/teams')
         .end((request, response) => {
           chai
             .request(server)
-            .put(`/v1/teams/${response.body[0].id}`)
+            .put(`/api/v1/teams/${response.body[0].id}`)
             .send({ name: 'first_team', established_in: 1870 })
             .end((request, response) => {
               expect(response.status).to.equal(400);
@@ -170,11 +170,11 @@ describe('Teams', () => {
     it('Test delete team should return 204', (done) => {
       chai
         .request(server)
-        .get('/v1/teams')
+        .get('/api/v1/teams')
         .end((request, response) => {
           chai
             .request(server)
-            .delete(`/v1/teams/${response.body[0].id}`)
+            .delete(`/api/v1/teams/${response.body[0].id}`)
             .end((request, response) => {
               expect(response.status).to.equal(204);
               done();

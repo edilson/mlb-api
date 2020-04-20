@@ -28,11 +28,11 @@ describe('Venues', () => {
     it('Test create venue should return 201', (done) => {
       chai
         .request(server)
-        .get('/v1/teams')
+        .get('/api/v1/teams')
         .end((request, response) => {
           chai
             .request(server)
-            .post('/v1/venues')
+            .post('/api/v1/venues')
             .send({
               name: 'test stadium',
               opened: 1925,
@@ -62,7 +62,7 @@ describe('Venues', () => {
 
       chai
         .request(server)
-        .post('/v1/venues')
+        .post('/api/v1/venues')
         .send(invalidPayload)
         .end((request, response) => {
           expect(response.status).to.equal(400);
@@ -75,7 +75,7 @@ describe('Venues', () => {
     it('Test list venues should return 200', (done) => {
       chai
         .request(server)
-        .get('/v1/venues')
+        .get('/api/v1/venues')
         .end((request, response) => {
           expect(response.status).to.equal(200);
           expect(response.body).is.an('array');
@@ -93,7 +93,7 @@ describe('Venues', () => {
     it('Test list venues pagination without number should return 400', (done) => {
       chai
         .request(server)
-        .get('/v1/venues?page=j')
+        .get('/api/v1/venues?page=j')
         .end((request, response) => {
           expect(response.status).to.equal(400);
           expect(response.body.message).to.equal('"page" must be a number');
@@ -106,11 +106,11 @@ describe('Venues', () => {
     it('Test find venue by id should return 200', (done) => {
       chai
         .request(server)
-        .get('/v1/venues')
+        .get('/api/v1/venues')
         .end((request, response) => {
           chai
             .request(server)
-            .get(`/v1/venues/${response.body[0].id}`)
+            .get(`/api/v1/venues/${response.body[0].id}`)
             .end((request, response) => {
               expect(response.status).to.equal(200);
               expect(response.body).have.property('name');
@@ -128,13 +128,13 @@ describe('Venues', () => {
     it('Test update venue should return 200', (done) => {
       chai
         .request(server)
-        .get('/v1/venues')
+        .get('/api/v1/venues')
         .end((request, response) => {
           expect(response.body[0].opened).is.not.equal(1938);
           expect(response.body[0].capacity).is.not.equal(45000);
           chai
             .request(server)
-            .put(`/v1/venues/${response.body[0].id}`)
+            .put(`/api/v1/venues/${response.body[0].id}`)
             .send({ opened: 1938, capacity: 45000 })
             .end((request, response) => {
               expect(response.status).to.equal(200);
@@ -154,11 +154,11 @@ describe('Venues', () => {
     it('Test update with invalid data should return 400', (done) => {
       chai
         .request(server)
-        .get('/v1/venues')
+        .get('/api/v1/venues')
         .end((request, response) => {
           chai
             .request(server)
-            .put(`/v1/venues/${response.body[0].id}`)
+            .put(`/api/v1/venues/${response.body[0].id}`)
             .send({ name: 'some' })
             .end((request, response) => {
               expect(response.status).to.equal(400);
@@ -174,11 +174,11 @@ describe('Venues', () => {
       it('Test delete venue should return 204', (done) => {
         chai
           .request(server)
-          .get('/v1/venues')
+          .get('/api/v1/venues')
           .end((request, response) => {
             chai
               .request(server)
-              .delete(`/v1/venues/${response.body[0].id}`)
+              .delete(`/api/v1/venues/${response.body[0].id}`)
               .end((request, response) => {
                 expect(response.status).to.equal(204);
                 done();

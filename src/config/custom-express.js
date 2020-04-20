@@ -8,7 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(routers);
+app.use('/api/v1', routers);
 app.use(errors());
 
 module.exports = app;

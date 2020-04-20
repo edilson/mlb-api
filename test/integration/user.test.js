@@ -33,7 +33,7 @@ describe('Users', () => {
     it('Test create user should return 201', (done) => {
       chai
         .request(server)
-        .post('/v1/register')
+        .post('/api/v1/register')
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(201);
@@ -46,7 +46,7 @@ describe('Users', () => {
     it('Test create user with invalid data should return 400', (done) => {
       chai
         .request(server)
-        .post('/v1/register')
+        .post('/api/v1/register')
         .send(invalidPayload)
         .end((request, response) => {
           expect(response.status).to.equal(400);

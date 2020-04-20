@@ -6,7 +6,7 @@ const TeamController = require('../controllers/TeamController');
 const routes = express.Router();
 
 routes.post(
-  '/v1/teams',
+  '/teams',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),
@@ -20,7 +20,7 @@ routes.post(
   TeamController.create
 );
 routes.get(
-  '/v1/teams',
+  '/teams',
   celebrate({
     [Segments.QUERY]: Joi.object().keys({
       page: Joi.number(),
@@ -29,7 +29,7 @@ routes.get(
   TeamController.list
 );
 routes.get(
-  '/v1/teams/:id',
+  '/teams/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().required(),
@@ -38,7 +38,7 @@ routes.get(
   TeamController.findById
 );
 routes.put(
-  '/v1/teams/:id',
+  '/teams/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().required(),
@@ -55,7 +55,7 @@ routes.put(
   TeamController.update
 );
 routes.delete(
-  '/v1/teams/:id',
+  '/teams/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().required(),
