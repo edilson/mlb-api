@@ -10,7 +10,10 @@ routes.post(
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       start_date: Joi.date().required(),
-      end_date: Joi.date().required(),
+      end_date: Joi.date()
+        .ruleset.greater(Joi.ref('start_date'))
+        .rule({ message: 'end_date must be greater than start_date' })
+        .required(),
       champion_id: Joi.string().required(),
       runners_up_id: Joi.string().required(),
     }),

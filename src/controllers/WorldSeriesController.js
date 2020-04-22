@@ -35,14 +35,23 @@ module.exports = {
   async update(request, response) {
     const { id } = request.params;
 
-    await connection(WORLD_SERIES_TABLE).where('id', id).update(request.body);
-
-    const updated_world_series = await connection(WORLD_SERIES_TABLE)
+    const worldSeriesToUpdate = await connection(WORLD_SERIES_TABLE)
       .where('id', id)
       .select('*')
       .first();
 
-    return response.json(updated_world_series);
+    if (
+      request.body.start_date > worldSeriesToUpdate.end_date ||
+      request.body.end_date < worldSeriesToUpdate.start_date
+    ) {
+      return response
+        .status(400)
+        .json({ message: 'end_date must be higher than start_date' });
+    }
+
+    await connection(WORLD_SERIES_TABLE).where('id', id).update(request.body);
+
+    return response.json(worldSeriesToUpdate);
   },
   async delete(request, response) {
     const { id } = request.params;

@@ -158,25 +158,6 @@ describe('World Series', () => {
             });
         });
     });
-
-    // it('Test update with invalid data should return 400', (done) => {
-    //   chai
-    //     .request(server)
-    //     .get('/api/v1/world_series')
-    //     .end((request, response) => {
-    //       chai
-    //         .request(server)
-    //         .put(`/api/v1/world_series/${response.body[0].id}`)
-    //         .send({ start_date: '10/09/2019' })
-    //         .end((request, response) => {
-    //           expect(response.status).to.equal(400);
-    //           expect(response.body.message).to.equal(
-    //             '"start_date" must be a valid date'
-    //           );
-    //           done();
-    //         });
-    //     });
-    // });
   });
 
   describe('Delete world series', () => {
