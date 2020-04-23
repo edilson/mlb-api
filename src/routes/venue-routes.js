@@ -10,7 +10,7 @@ routes.post(
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required().min(7),
-      opened: Joi.date().required(),
+      opened: Joi.date().iso().required(),
       capacity: Joi.number().integer().required(),
       location: Joi.string().required(),
       team_id: Joi.string().required(),
@@ -44,7 +44,7 @@ routes.put(
     }),
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().min(7),
-      opened: Joi.date(),
+      opened: Joi.date().iso(),
       capacity: Joi.number().integer(),
       location: Joi.string(),
       team_id: Joi.string(),

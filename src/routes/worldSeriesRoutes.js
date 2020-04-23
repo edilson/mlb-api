@@ -9,8 +9,9 @@ routes.post(
   '/world_series',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
-      start_date: Joi.date().required(),
+      start_date: Joi.date().iso().required(),
       end_date: Joi.date()
+        .iso()
         .ruleset.greater(Joi.ref('start_date'))
         .rule({ message: 'end_date must be greater than start_date' })
         .required(),
@@ -45,8 +46,8 @@ routes.put(
       id: Joi.number().integer().required(),
     }),
     [Segments.BODY]: Joi.object().keys({
-      start_date: Joi.date(),
-      end_date: Joi.date(),
+      start_date: Joi.date().iso(),
+      end_date: Joi.date().iso(),
       champion_id: Joi.string(),
       runners_up_id: Joi.string(),
     }),

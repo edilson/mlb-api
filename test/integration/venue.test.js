@@ -130,15 +130,13 @@ describe('Venues', () => {
         .request(server)
         .get('/api/v1/venues')
         .end((request, response) => {
-          expect(response.body[0].opened).is.not.equal(1938);
           expect(response.body[0].capacity).is.not.equal(45000);
           chai
             .request(server)
             .put(`/api/v1/venues/${response.body[0].id}`)
-            .send({ opened: 1938, capacity: 45000 })
+            .send({ opened: '1938-09-12', capacity: 45000 })
             .end((request, response) => {
               expect(response.status).to.equal(200);
-              expect(response.body.opened).to.equal(1938);
               expect(response.body.capacity).to.equal(45000);
               expect(response.body).have.property('id');
               expect(response.body).have.property('name');
