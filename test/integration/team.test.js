@@ -48,6 +48,14 @@ describe('Teams', () => {
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(201);
+          expect(response.body.name).to.equal(payload.name);
+          expect(response.body.established_in).to.equal(payload.established_in);
+          expect(response.body.league).to.equal(payload.league);
+          expect(response.body.division).to.equal(payload.division);
+          expect(response.body.logo).to.equal(payload.logo);
+          expect(response.body.number_of_titles).to.equal(
+            payload.number_of_titles
+          );
           done();
         });
     });

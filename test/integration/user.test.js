@@ -37,8 +37,8 @@ describe('Users', () => {
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(201);
-          expect(response.body).have.property('name');
-          expect(response.body).have.property('email');
+          expect(response.body.name).to.equal(payload.name);
+          expect(response.body.email).to.equal(payload.email);
           done();
         });
     });

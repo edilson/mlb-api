@@ -40,10 +40,7 @@ module.exports = {
       .select('*')
       .first();
 
-    if (
-      request.body.start_date > worldSeriesToUpdate.end_date ||
-      request.body.end_date < worldSeriesToUpdate.start_date
-    ) {
+    if (worldSeriesToUpdate.start_date > worldSeriesToUpdate.end_date) {
       return response
         .status(400)
         .json({ message: 'end_date must be higher than start_date' });

@@ -30,23 +30,27 @@ describe('Venues', () => {
         .request(server)
         .get('/api/v1/teams')
         .end((request, response) => {
+          const payload = {
+            name: 'test stadium',
+            opened: new Date(1925, 2 - 1, 23),
+            capacity: 59590,
+            location: 'awesome location',
+            team_id: response.body[1].id,
+          };
+
           chai
             .request(server)
             .post('/api/v1/venues')
-            .send({
-              name: 'test stadium',
-              opened: 1925,
-              capacity: 59590,
-              location: 'awesome location',
-              team_id: response.body[1].id,
-            })
+            .send(payload)
             .end((request, response) => {
               expect(response.status).to.equal(201);
-              expect(response.body).have.property('name');
-              expect(response.body).have.property('opened');
-              expect(response.body).have.property('capacity');
-              expect(response.body).have.property('location');
-              expect(response.body).have.property('team_id');
+              expect(response.body.name).to.equal(payload.name);
+              expect(response.body.opened).to.equal(
+                payload.opened.toISOString()
+              );
+              expect(response.body.capacity).to.equal(payload.capacity);
+              expect(response.body.location).to.equal(payload.location);
+              expect(response.body.team_id).to.equal(payload.team_id);
               done();
             });
         });
@@ -55,7 +59,7 @@ describe('Venues', () => {
     it('Test create venue with invalid data should return 400', (done) => {
       const invalidPayload = {
         name: 'test stadium',
-        opened: 1905,
+        opened: new Date(1905, 3 - 1, 12),
         capacity: 30590,
         location: 'some awesome',
       };
@@ -130,19 +134,22 @@ describe('Venues', () => {
         .request(server)
         .get('/api/v1/venues')
         .end((request, response) => {
-          expect(response.body[0].capacity).is.not.equal(45000);
+          const payload = {
+            name: 'some awesome name',
+            capacity: 45000,
+            location: 'anywhere',
+          };
+
           chai
             .request(server)
             .put(`/api/v1/venues/${response.body[0].id}`)
-            .send({ opened: '1938-09-12', capacity: 45000 })
+            .send(payload)
             .end((request, response) => {
               expect(response.status).to.equal(200);
-              expect(response.body.capacity).to.equal(45000);
+              expect(response.body.name).to.equal(payload.name);
+              expect(response.body.capacity).to.equal(payload.capacity);
+              expect(response.body.location).to.equal(payload.location);
               expect(response.body).have.property('id');
-              expect(response.body).have.property('name');
-              expect(response.body).have.property('opened');
-              expect(response.body).have.property('capacity');
-              expect(response.body).have.property('location');
               expect(response.body).have.property('team_id');
               done();
             });

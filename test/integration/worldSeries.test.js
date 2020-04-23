@@ -19,8 +19,8 @@ describe('World Series', () => {
     await createTeamTestHelper();
 
     const firstWorldSeries = {
-      start_date: '2010-10-28',
-      end_date: '2010-11-08',
+      start_date: new Date(2010, 10 - 1, 28),
+      end_date: new Date(2010, 11 - 1, 8),
       champion_id: firstTeam.id,
       runners_up_id: secondTeam.id,
     };
@@ -50,21 +50,29 @@ describe('World Series', () => {
         .request(server)
         .get('/api/v1/teams')
         .end((request, response) => {
+          const payload = {
+            start_date: new Date(2011, 10 - 1, 25),
+            end_date: new Date(2011, 11 - 1, 3),
+            champion_id: response.body[2].id,
+            runners_up_id: response.body[3].id,
+          };
+
           chai
             .request(server)
             .post('/api/v1/world_series')
-            .send({
-              start_date: '2011-10-25',
-              end_date: '2011-11-03',
-              champion_id: response.body[2].id,
-              runners_up_id: response.body[3].id,
-            })
+            .send(payload)
             .end((request, response) => {
               expect(response.status).to.equal(201);
-              expect(response.body).have.property('start_date');
-              expect(response.body).have.property('end_date');
-              expect(response.body).have.property('champion_id');
-              expect(response.body).have.property('runners_up_id');
+              expect(response.body.start_date).to.equal(
+                payload.start_date.toISOString()
+              );
+              expect(response.body.end_date).to.equal(
+                payload.end_date.toISOString()
+              );
+              expect(response.body.champion_id).to.equal(payload.champion_id);
+              expect(response.body.runners_up_id).to.equal(
+                payload.runners_up_id
+              );
               done();
             });
         });
@@ -72,8 +80,8 @@ describe('World Series', () => {
 
     it('Test create world series with invalid data should return 400', (done) => {
       const invalidPayload = {
-        start_date: '2014-10-29',
-        end_date: '2014-11-05',
+        start_date: new Date(2014, 10 - 1, 29),
+        end_date: new Date(2014, 11 - 1, 5),
       };
 
       chai
@@ -146,7 +154,10 @@ describe('World Series', () => {
           chai
             .request(server)
             .put(`/api/v1/world_series/${response.body[0].id}`)
-            .send({ start_date: '2012-10-23', end_date: '2012-11-02' })
+            .send({
+              start_date: new Date(2012, 10 - 1, 23),
+              end_date: new Date(2012, 11 - 1, 2),
+            })
             .end((request, response) => {
               expect(response.status).to.equal(200);
               expect(response.body).have.property('id');
