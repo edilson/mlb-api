@@ -6,8 +6,8 @@ const routes = express.Router();
 const UserController = require('../controllers/UserController');
 const LoginController = require('../controllers/LoginController');
 
-const teamRoutes = require('./team-routes');
-const venueRoutes = require('./venue-routes');
+const teamRoutes = require('./teamRoutes');
+const venueRoutes = require('./venueRoutes');
 const worldSeriesRoutes = require('./worldSeriesRoutes');
 
 routes.use(teamRoutes);
