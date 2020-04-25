@@ -2,6 +2,7 @@ const express = require('express');
 const { celebrate, Segments, Joi } = require('celebrate');
 
 const TeamController = require('../controllers/TeamController');
+const TeamPropertiesController = require('../controllers/TeamPropertiesController');
 
 const routes = express.Router();
 
@@ -63,5 +64,7 @@ routes.delete(
   }),
   TeamController.delete
 );
+routes.get('/teams/:id/venue', TeamPropertiesController.getVenue);
+routes.get('/teams/:id/world_series', TeamPropertiesController.listWorldSeries);
 
 module.exports = routes;
