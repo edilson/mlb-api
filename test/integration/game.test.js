@@ -74,6 +74,7 @@ describe('Games', () => {
             .get(`/api/v1/world_series/${response.body[0].id}/games`)
             .end((request, response) => {
               expect(response.status).to.equal(200);
+              expect(response.body).to.have.length(1);
               done();
             });
         });
