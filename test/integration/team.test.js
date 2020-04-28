@@ -23,6 +23,14 @@ describe('Teams', () => {
       'some awesome logo',
       2
     );
+    await createTeamTestHelper(
+      'second-team',
+      1939,
+      'National League',
+      'Central Division',
+      'some cool logo',
+      4
+    );
     await createVenueTestHelper(
       'first-venue',
       new Date(1955, 12 - 1, 13),
@@ -196,7 +204,7 @@ describe('Teams', () => {
         .end((request, response) => {
           chai
             .request(server)
-            .delete(`/api/v1/teams/${response.body[0].id}`)
+            .delete(`/api/v1/teams/${response.body[1].id}`)
             .end((request, response) => {
               expect(response.status).to.equal(204);
               done();

@@ -24,6 +24,13 @@ services:
     ports:
       - 5432:5432
 
+  db_test:
+    image: postgres:latest
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mlb_test
+
   adminer:
     image: adminer
     ports:

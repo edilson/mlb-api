@@ -10,6 +10,7 @@ COPY package.json /usr/app/
 RUN npm install
 
 ADD . /usr/app/
+RUN chmod +x /usr/app/wait-for-it.sh
 
 EXPOSE 3333
-CMD ["npm", "run", "dev"]
+CMD ["./wait-for-it.sh", "db:5432", "--timeout=0", "--", "npm", "run", "dev"]
