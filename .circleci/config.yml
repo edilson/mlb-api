@@ -5,6 +5,7 @@ jobs:
       - image: circleci/node:12
       - image: circleci/postgres:latest
         environment:
+          POSTGRES_HOST: db_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: mlb_test
