@@ -1,5 +1,5 @@
 run:
-	docker-compose up --build
+	docker-compose up
 
 .PHONY: test
 test:

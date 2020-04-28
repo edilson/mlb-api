@@ -3,6 +3,8 @@ const { celebrate, Segments, Joi } = require('celebrate');
 
 const WorldSeriesController = require('../controllers/WorldSeriesController');
 
+const gameRoutes = require('./gameRoutes');
+
 const routes = express.Router();
 
 routes.post(
@@ -63,5 +65,6 @@ routes.delete(
   }),
   WorldSeriesController.delete
 );
+routes.use(gameRoutes);
 
 module.exports = routes;
