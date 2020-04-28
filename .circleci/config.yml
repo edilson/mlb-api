@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  wait-for: cobli/wait-for@0.0.2
-
 jobs:
   build:
     docker:
@@ -26,17 +23,9 @@ jobs:
       - run:
           name: Install dependencies
           command: npm install
-      - wait-for/sh-command:
-          sh-command: |
-            "[for i in `seq 1 10`;
-              do
-                nc -z db_test 5432 && echo Success && exit 0
-                echo -n .
-                sleep 1
-              done
-              echo Failed waiting for Postgres && exit 1]"
-          seconds_between_retries: 10
-          timeout: 60
+      - run:
+          name: Wait for Postgres to start
+          command: dockerize -wait tcp://db_test:5432 -timeout 1m
       - save_cache:
           paths:
             - node_modules
