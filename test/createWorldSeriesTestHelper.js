@@ -1,16 +1,16 @@
 const connection = require('../src/database/connection');
 
 module.exports = async (
-  date_started,
-  date_finished,
-  world_series_winner,
-  world_series_runners_up
+  dateStarted,
+  dateFinished,
+  worldSeriesWinner,
+  worldSeriesRunnersUp
 ) => {
   const worldSeries = {
-    start_date: date_started,
-    end_date: date_finished,
-    champion_id: world_series_winner,
-    runners_up_id: world_series_runners_up,
+    start_date: dateStarted,
+    end_date: dateFinished,
+    champion_id: worldSeriesWinner,
+    runners_up_id: worldSeriesRunnersUp,
   };
 
   const { start_date, end_date, champion_id, runners_up_id } = worldSeries;
@@ -23,7 +23,7 @@ module.exports = async (
   });
 
   const createdWorldSeries = await connection('world_series')
-    .where('champion_id', world_series_winner)
+    .where('champion_id', worldSeriesWinner)
     .select('*')
     .first();
 

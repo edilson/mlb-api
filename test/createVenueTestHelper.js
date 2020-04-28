@@ -1,12 +1,18 @@
 const connection = require('../src/database/connection');
 
-module.exports = async (venue_owner_id) => {
+module.exports = async (
+  venueName,
+  openedDate,
+  venueCapacity,
+  venueLocation,
+  venueOwnerId
+) => {
   const venue = {
-    name: 'awesome stadium',
-    opened: new Date(1955, 8 - 1, 12),
-    capacity: 39590,
-    location: 'some awesome',
-    team_id: venue_owner_id,
+    name: venueName,
+    opened: openedDate,
+    capacity: venueCapacity,
+    location: venueLocation,
+    team_id: venueOwnerId,
   };
 
   const { name, opened, capacity, location, team_id } = venue;
@@ -20,7 +26,7 @@ module.exports = async (venue_owner_id) => {
   });
 
   const createdVenue = await connection('venue')
-    .where('team_id', venue_owner_id)
+    .where('team_id', venueOwnerId)
     .select('*')
     .first();
 

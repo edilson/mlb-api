@@ -4,6 +4,7 @@ const expect = require('chai').expect;
 
 const connection = require('../../src/database/connection');
 const server = require('../../server');
+
 const createTeamTestHelper = require('../createTeamTestHelper');
 const createVenueTestHelper = require('../createVenueTestHelper');
 
@@ -14,8 +15,21 @@ describe('Teams', () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
 
-    const firstTeam = await createTeamTestHelper();
-    await createVenueTestHelper(firstTeam.id);
+    const firstTeam = await createTeamTestHelper(
+      'first-team',
+      1899,
+      'American League',
+      'East Division',
+      'some awesome logo',
+      2
+    );
+    await createVenueTestHelper(
+      'first-venue',
+      new Date(1955, 12 - 1, 13),
+      55900,
+      'somewhere i belong',
+      firstTeam.id
+    );
   });
 
   afterEach(async () => {

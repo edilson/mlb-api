@@ -1,16 +1,23 @@
 const connection = require('../src/database/connection');
 const generateUniqueId = require('../src/utils/generateUniqueId');
 
-module.exports = async () => {
+module.exports = async (
+  teamName,
+  foundationYear,
+  teamLeague,
+  teamDivision,
+  teamLogo,
+  teamNumberOfTitles
+) => {
   const id = generateUniqueId();
 
   const firstTeam = {
-    name: 'test-team1',
-    established_in: 1899,
-    league: 'testing league1',
-    division: 'testing division',
-    logo: 'some logo',
-    number_of_titles: 1,
+    name: teamName,
+    established_in: foundationYear,
+    league: teamLeague,
+    division: teamDivision,
+    logo: teamLogo,
+    number_of_titles: teamNumberOfTitles,
   };
 
   const {

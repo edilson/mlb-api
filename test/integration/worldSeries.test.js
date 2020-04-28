@@ -4,7 +4,9 @@ const expect = require('chai').expect;
 
 const connection = require('../../src/database/connection');
 const server = require('../../server');
+
 const createTeamTestHelper = require('../createTeamTestHelper');
+const createWorldSeriesTestHelper = require('../createWorldSeriesTestHelper');
 
 chai.use(chaiHttp);
 
@@ -13,31 +15,29 @@ describe('World Series', () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
 
-    const firstTeam = await createTeamTestHelper();
-    const secondTeam = await createTeamTestHelper();
-    await createTeamTestHelper();
-    await createTeamTestHelper();
+    const firstTeam = await createTeamTestHelper(
+      'first-team',
+      1890,
+      'American League',
+      'West Division',
+      'some excelent logo',
+      9
+    );
+    const secondTeam = await createTeamTestHelper(
+      'second-team',
+      1880,
+      'National League',
+      'West Division',
+      'some excelent logo',
+      5
+    );
 
-    const firstWorldSeries = {
-      start_date: new Date(2010, 10 - 1, 28),
-      end_date: new Date(2010, 11 - 1, 8),
-      champion_id: firstTeam.id,
-      runners_up_id: secondTeam.id,
-    };
-
-    const {
-      start_date,
-      end_date,
-      champion_id,
-      runners_up_id,
-    } = firstWorldSeries;
-
-    await connection('world_series').insert({
-      start_date,
-      end_date,
-      champion_id,
-      runners_up_id,
-    });
+    await createWorldSeriesTestHelper(
+      new Date(2010, 10 - 1, 28),
+      new Date(2010, 11 - 1, 8),
+      firstTeam.id,
+      secondTeam.id
+    );
   });
 
   afterEach(async () => {
@@ -53,8 +53,8 @@ describe('World Series', () => {
           const payload = {
             start_date: new Date(2011, 10 - 1, 25),
             end_date: new Date(2011, 11 - 1, 3),
-            champion_id: response.body[2].id,
-            runners_up_id: response.body[3].id,
+            champion_id: response.body[0].id,
+            runners_up_id: response.body[1].id,
           };
 
           chai

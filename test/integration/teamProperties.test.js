@@ -16,10 +16,30 @@ describe('Team Properties', () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
 
-    const firstTeam = await createTeamTestHelper();
-    const secondTeam = await createTeamTestHelper();
+    const firstTeam = await createTeamTestHelper(
+      'first-team',
+      1899,
+      'American League',
+      'East Division',
+      'some awesome logo',
+      2
+    );
+    const secondTeam = await createTeamTestHelper(
+      'second-team',
+      1880,
+      'National League',
+      'West Division',
+      'some excelent logo',
+      5
+    );
 
-    await createVenueTestHelper(firstTeam.id);
+    await createVenueTestHelper(
+      'first-venue',
+      new Date(1912, 10 - 1, 23),
+      45900,
+      'somewhere i belong',
+      firstTeam.id
+    );
 
     await createWorldSeriesTestHelper(
       new Date(2010, 10 - 1, 25),
