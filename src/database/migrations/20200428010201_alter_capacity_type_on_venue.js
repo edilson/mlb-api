@@ -4,4 +4,8 @@ exports.up = function (knex) {
   });
 };
 
-exports.down = function () {};
+exports.down = function (knex) {
+  return knex.schema.table('venue', (table) => {
+    table.integer('capacity').notNullable().alter();
+  });
+};

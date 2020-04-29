@@ -6,64 +6,64 @@ const TeamPropertiesController = require('../controllers/TeamPropertiesControlle
 
 const routes = express.Router();
 
-routes.post(
-  '/teams',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().required(),
-      established_in: Joi.number().integer().required().min(1871),
-      league: Joi.string().required().length(15),
-      division: Joi.string().required().min(13).max(17),
-      logo: Joi.string().required(),
-      number_of_titles: Joi.number().integer().required(),
+routes
+  .route('/teams')
+  .post(
+    celebrate({
+      [Segments.BODY]: Joi.object().keys({
+        name: Joi.string().required(),
+        established_in: Joi.number().integer().required().min(1871),
+        league: Joi.string().required().length(15),
+        division: Joi.string().required().min(13).max(17),
+        logo: Joi.string().required(),
+        number_of_titles: Joi.number().integer().required(),
+      }),
     }),
-  }),
-  TeamController.create
-);
-routes.get(
-  '/teams',
-  celebrate({
-    [Segments.QUERY]: Joi.object().keys({
-      page: Joi.number(),
+    TeamController.create
+  )
+  .get(
+    celebrate({
+      [Segments.QUERY]: Joi.object().keys({
+        page: Joi.number(),
+      }),
     }),
-  }),
-  TeamController.list
-);
-routes.get(
-  '/teams/:id',
-  celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-      id: Joi.string().required(),
+    TeamController.list
+  );
+
+routes
+  .route('/teams/:id')
+  .get(
+    celebrate({
+      [Segments.PARAMS]: Joi.object().keys({
+        id: Joi.string().required(),
+      }),
     }),
-  }),
-  TeamController.findById
-);
-routes.put(
-  '/teams/:id',
-  celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-      id: Joi.string().required(),
+    TeamController.findById
+  )
+  .put(
+    celebrate({
+      [Segments.PARAMS]: Joi.object().keys({
+        id: Joi.string().required(),
+      }),
+      [Segments.BODY]: Joi.object().keys({
+        name: Joi.string(),
+        established_in: Joi.number().integer().min(1871),
+        league: Joi.string().length(15),
+        division: Joi.string().min(13).max(17),
+        logo: Joi.string(),
+        number_of_titles: Joi.number().integer(),
+      }),
     }),
-    [Segments.BODY]: Joi.object().keys({
-      name: Joi.string(),
-      established_in: Joi.number().integer().min(1871),
-      league: Joi.string().length(15),
-      division: Joi.string().min(13).max(17),
-      logo: Joi.string(),
-      number_of_titles: Joi.number().integer(),
+    TeamController.update
+  )
+  .delete(
+    celebrate({
+      [Segments.PARAMS]: Joi.object().keys({
+        id: Joi.string().required(),
+      }),
     }),
-  }),
-  TeamController.update
-);
-routes.delete(
-  '/teams/:id',
-  celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-      id: Joi.string().required(),
-    }),
-  }),
-  TeamController.delete
-);
+    TeamController.delete
+  );
 routes.get('/teams/:id/venue', TeamPropertiesController.getVenue);
 routes.get('/teams/:id/world_series', TeamPropertiesController.listWorldSeries);
 
