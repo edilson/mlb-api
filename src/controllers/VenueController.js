@@ -80,7 +80,7 @@ module.exports = {
 
     venue.team = await connection('team')
       .where('id', venue.team_id)
-      .select('id', 'name', 'logo')
+      .select('*')
       .first();
 
     return response.json(venue);

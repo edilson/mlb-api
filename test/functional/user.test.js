@@ -18,19 +18,13 @@ describe('Users', () => {
   });
 
   describe('Create user', () => {
-    const payload = {
-      name: 'Maria Silva',
-      email: 'mariasilva@hotmail.com',
-      password: '123ro',
-    };
-
-    const invalidPayload = {
-      name: 'Ju',
-      email: 'ju@hotmail.com',
-      password: '123ml',
-    };
-
     it('Test create user should return 201', (done) => {
+      const payload = {
+        name: 'Maria Silva',
+        email: 'mariasilva@hotmail.com',
+        password: '123ro',
+      };
+
       chai
         .request(server)
         .post('/api/v1/register')
@@ -44,6 +38,12 @@ describe('Users', () => {
     });
 
     it('Test create user with invalid data should return 400', (done) => {
+      const invalidPayload = {
+        name: 'Ju',
+        email: 'ju@hotmail.com',
+        password: '123ml',
+      };
+
       chai
         .request(server)
         .post('/api/v1/register')

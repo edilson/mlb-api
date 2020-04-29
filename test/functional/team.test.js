@@ -11,11 +11,13 @@ const createVenueTestHelper = require('../createVenueTestHelper');
 chai.use(chaiHttp);
 
 describe('Teams', () => {
+  let firstTeam, secondTeam, firstVenue;
+
   beforeEach(async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
 
-    const firstTeam = await createTeamTestHelper(
+    firstTeam = await createTeamTestHelper(
       'first-team',
       1899,
       'American League',
@@ -23,15 +25,15 @@ describe('Teams', () => {
       'some awesome logo',
       2
     );
-    await createTeamTestHelper(
+    secondTeam = await createTeamTestHelper(
       'second-team',
-      1939,
+      1888,
       'National League',
       'Central Division',
       'some cool logo',
-      4
+      9
     );
-    await createVenueTestHelper(
+    firstVenue = await createVenueTestHelper(
       'first-venue',
       new Date(1955, 12 - 1, 13),
       55900,
@@ -45,25 +47,16 @@ describe('Teams', () => {
   });
 
   describe('Create Team', () => {
-    const payload = {
-      name: 'test-team',
-      established_in: 1880,
-      league: 'testing league1',
-      division: 'testing division',
-      logo: 'some logo',
-      number_of_titles: 0,
-    };
+    it('should create team', (done) => {
+      const payload = {
+        name: 'test-team',
+        established_in: 1880,
+        league: 'testing league1',
+        division: 'testing division',
+        logo: 'some logo',
+        number_of_titles: 0,
+      };
 
-    const invalidPayload = {
-      name: 'test-team',
-      established_in: 1870,
-      league: 'testing league',
-      division: 'test division',
-      logo: 'some logo',
-      number_of_titles: '',
-    };
-
-    it('Test create team should return 201', (done) => {
       chai
         .request(server)
         .post('/api/v1/teams')
@@ -83,6 +76,15 @@ describe('Teams', () => {
     });
 
     it('Test create team with invalid data should return 400', (done) => {
+      const invalidPayload = {
+        name: 'test-team',
+        established_in: 1870,
+        league: 'testing league',
+        division: 'test division',
+        logo: 'some logo',
+        number_of_titles: '',
+      };
+
       chai
         .request(server)
         .post('/api/v1/teams')
@@ -95,7 +97,7 @@ describe('Teams', () => {
   });
 
   describe('List teams', () => {
-    it('Test list team should return 200', (done) => {
+    it('should list teams', (done) => {
       chai
         .request(server)
         .get('/api/v1/teams')
@@ -103,18 +105,22 @@ describe('Teams', () => {
           expect(response.status).to.equal(200);
           expect(response.body).is.an('array');
           expect(response.header).have.property('x-total-count');
-          expect(response.body[0]).have.property('id');
-          expect(response.body[0]).have.property('name');
-          expect(response.body[0]).have.property('established_in');
-          expect(response.body[0]).have.property('league');
-          expect(response.body[0]).have.property('division');
-          expect(response.body[0]).have.property('logo');
-          expect(response.body[0]).have.property('number_of_titles');
+          expect(response.body[0].id).to.equal(firstTeam.id);
+          expect(response.body[0].name).to.equal(firstTeam.name);
+          expect(response.body[0].established_in).to.equal(
+            firstTeam.established_in
+          );
+          expect(response.body[0].league).to.equal(firstTeam.league);
+          expect(response.body[0].division).to.equal(firstTeam.division);
+          expect(response.body[0].logo).to.equal(firstTeam.logo);
+          expect(response.body[0].number_of_titles).to.equal(
+            firstTeam.number_of_titles
+          );
           done();
         });
     });
 
-    it('Test list team pagination without number should return 400', (done) => {
+    it('should return 400 with invalid pagination value', (done) => {
       chai
         .request(server)
         .get('/api/v1/teams?page=n')
@@ -127,88 +133,75 @@ describe('Teams', () => {
   });
 
   describe('Find team by id', () => {
-    it('Test find team by id should return 200', (done) => {
+    it('should find requested team by id', (done) => {
       chai
         .request(server)
-        .get('/api/v1/teams')
+        .get(`/api/v1/teams/${firstTeam.id}`)
         .end((request, response) => {
-          chai
-            .request(server)
-            .get(`/api/v1/teams/${response.body[0].id}`)
-            .end((request, response) => {
-              expect(response.status).to.equal(200);
-              expect(response.body).have.property('id');
-              expect(response.body).have.property('name');
-              expect(response.body).have.property('established_in');
-              expect(response.body).have.property('league');
-              expect(response.body).have.property('division');
-              expect(response.body).have.property('logo');
-              expect(response.body).have.property('number_of_titles');
-              expect(response.body).have.property('venue');
-              done();
-            });
+          expect(response.status).to.equal(200);
+          expect(response.body.id).to.equal(firstTeam.id);
+          expect(response.body.name).to.equal(firstTeam.name);
+          expect(response.body.established_in).to.equal(
+            firstTeam.established_in
+          );
+          expect(response.body.league).to.equal(firstTeam.league);
+          expect(response.body.division).to.equal(firstTeam.division);
+          expect(response.body.logo).to.equal(firstTeam.logo);
+          expect(response.body.number_of_titles).to.equal(
+            firstTeam.number_of_titles
+          );
+          // expect(response.body).have.property('venue', firstVenue);
+          done();
         });
     });
   });
 
   describe('Update team', () => {
-    it('Test update team should return 200', (done) => {
+    it('should update team', (done) => {
       chai
         .request(server)
-        .get('/api/v1/teams')
+        .put(`/api/v1/teams/${firstTeam.id}`)
+        .send({ name: 'first-team-updated' })
         .end((request, response) => {
-          expect(response.body[0].name).is.not.equal('first_team');
-          chai
-            .request(server)
-            .put(`/api/v1/teams/${response.body[0].id}`)
-            .send({ name: 'first_team' })
-            .end((request, response) => {
-              expect(response.status).to.equal(200);
-              expect(response.body.name).to.equal('first_team');
-              expect(response.body).has.property('id');
-              expect(response.body).has.property('established_in');
-              expect(response.body).has.property('league');
-              expect(response.body).has.property('division');
-              expect(response.body).has.property('logo');
-              expect(response.body).has.property('number_of_titles');
-              done();
-            });
+          expect(response.status).to.equal(200);
+          expect(response.body.id).to.equal(firstTeam.id);
+          expect(response.body.name).to.equal('first-team-updated');
+          expect(response.body.established_in).to.equal(
+            firstTeam.established_in
+          );
+          expect(response.body.league).to.equal(firstTeam.league);
+          expect(response.body.division).to.equal(firstTeam.division);
+          expect(response.body.logo).to.equal(firstTeam.logo);
+          expect(response.body.number_of_titles).to.equal(
+            firstTeam.number_of_titles
+          );
+          done();
         });
     });
 
     it('Test update team with invalid data should return 400', (done) => {
       chai
         .request(server)
-        .get('/api/v1/teams')
+        .put(`/api/v1/teams/${firstTeam.id}`)
+        .send({ name: 'first-team-updated', established_in: 1870 })
         .end((request, response) => {
-          chai
-            .request(server)
-            .put(`/api/v1/teams/${response.body[0].id}`)
-            .send({ name: 'first_team', established_in: 1870 })
-            .end((request, response) => {
-              expect(response.status).to.equal(400);
-              expect(response.body.message).to.equal(
-                '"established_in" must be larger than or equal to 1871'
-              );
-              done();
-            });
+          expect(response.status).to.equal(400);
+          expect(response.body.message).to.equal(
+            '"established_in" must be larger than or equal to 1871'
+          );
+          done();
         });
     });
   });
 
   describe('Delete team', () => {
-    it('Test delete team should return 204', (done) => {
+    it('should delete team', (done) => {
       chai
         .request(server)
-        .get('/api/v1/teams')
+        .delete(`/api/v1/teams/${secondTeam.id}`)
         .end((request, response) => {
-          chai
-            .request(server)
-            .delete(`/api/v1/teams/${response.body[1].id}`)
-            .end((request, response) => {
-              expect(response.status).to.equal(204);
-              done();
-            });
+          expect(response.status).to.equal(204);
+          done();
         });
     });
   });

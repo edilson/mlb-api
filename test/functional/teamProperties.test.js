@@ -12,11 +12,13 @@ const createWorldSeriesTestHelper = require('../createWorldSeriesTestHelper');
 chai.use(chaiHttp);
 
 describe('Team Properties', () => {
+  let firstTeam, secondTeam, firstVenue, firstWorldSeries;
+
   beforeEach(async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
 
-    const firstTeam = await createTeamTestHelper(
+    firstTeam = await createTeamTestHelper(
       'first-team',
       1899,
       'American League',
@@ -24,7 +26,8 @@ describe('Team Properties', () => {
       'some awesome logo',
       2
     );
-    const secondTeam = await createTeamTestHelper(
+
+    secondTeam = await createTeamTestHelper(
       'second-team',
       1880,
       'National League',
@@ -33,7 +36,7 @@ describe('Team Properties', () => {
       5
     );
 
-    await createVenueTestHelper(
+    firstVenue = await createVenueTestHelper(
       'first-venue',
       new Date(1912, 10 - 1, 23),
       45900,
@@ -41,7 +44,7 @@ describe('Team Properties', () => {
       firstTeam.id
     );
 
-    await createWorldSeriesTestHelper(
+    firstWorldSeries = await createWorldSeriesTestHelper(
       new Date(2010, 10 - 1, 25),
       new Date(2010, 11 - 1, 5),
       firstTeam.id,
@@ -54,24 +57,21 @@ describe('Team Properties', () => {
   });
 
   describe('Get venue', () => {
-    it('Test get team venue should return 200', (done) => {
+    it('should return team venue', (done) => {
       chai
         .request(server)
-        .get('/api/v1/teams')
+        .get(`/api/v1/teams/${firstTeam.id}/venue`)
         .end((request, response) => {
-          chai
-            .request(server)
-            .get(`/api/v1/teams/${response.body[0].id}/venue`)
-            .end((request, response) => {
-              expect(response.status).to.equal(200);
-              expect(response.body).have.property('id');
-              expect(response.body).have.property('name');
-              expect(response.body).have.property('opened');
-              expect(response.body).have.property('capacity');
-              expect(response.body).have.property('location');
-              expect(response.body).have.property('team_id');
-              done();
-            });
+          expect(response.status).to.equal(200);
+          expect(response.body.id).to.equal(firstVenue.id);
+          expect(response.body.name).to.equal(firstVenue.name);
+          expect(response.body.opened).to.equal(
+            firstVenue.opened.toISOString()
+          );
+          expect(response.body.capacity).to.equal(firstVenue.capacity);
+          expect(response.body.location).to.equal(firstVenue.location);
+          expect(response.body.team_id).to.equal(firstVenue.team_id);
+          done();
         });
     });
   });
@@ -80,19 +80,22 @@ describe('Team Properties', () => {
     it('Test get team world series should return 200', (done) => {
       chai
         .request(server)
-        .get('/api/v1/teams')
+        .get(`/api/v1/teams/${firstTeam.id}/world_series`)
         .end((request, response) => {
-          chai
-            .request(server)
-            .get(`/api/v1/teams/${response.body[0].id}/world_series`)
-            .end((request, response) => {
-              expect(response.status).to.equal(200);
-              expect(response.body[0]).have.property('start_date');
-              expect(response.body[0]).have.property('end_date');
-              expect(response.body[0]).have.property('champion_id');
-              expect(response.body[0]).have.property('runners_up_id');
-              done();
-            });
+          expect(response.status).to.equal(200);
+          expect(response.body[0].start_date).to.equal(
+            firstWorldSeries.start_date.toISOString()
+          );
+          expect(response.body[0].end_date).to.equal(
+            firstWorldSeries.end_date.toISOString()
+          );
+          expect(response.body[0].champion_id).to.equal(
+            firstWorldSeries.champion_id
+          );
+          expect(response.body[0].runners_up_id).to.equal(
+            firstWorldSeries.runners_up_id
+          );
+          done();
         });
     });
   });
