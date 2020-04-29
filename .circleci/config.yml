@@ -20,6 +20,13 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
       - run:
+          name: Install system dependencies
+          command: |
+            sudo apt install build-essential
+            sudo apt install curl
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+      - run:
           name: Update npm
           command: sudo npm install -g npm@latest
       - run:
@@ -34,7 +41,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: Run tests
-          command: npm test
+          command: make test
   deploy:
     docker:
       - image: circleci/node:12
