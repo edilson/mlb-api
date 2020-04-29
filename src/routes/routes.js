@@ -9,10 +9,12 @@ const LoginController = require('../controllers/LoginController');
 const teamRoutes = require('./teamRoutes');
 const venueRoutes = require('./venueRoutes');
 const worldSeriesRoutes = require('./worldSeriesRoutes');
+const divisionSeriesRoutes = require('./divisionSeriesRoutes');
 
 routes.use(teamRoutes);
 routes.use(venueRoutes);
 routes.use(worldSeriesRoutes);
+routes.use(divisionSeriesRoutes);
 
 routes.post(
   '/register',
