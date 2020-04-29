@@ -2,14 +2,16 @@ version: 2.1
 
 jobs:
   build:
-    docker:
-      - image: circleci/node:12
-      - image: circleci/postgres:latest
-        environment:
-          POSTGRES_HOST: db_test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: mlb_test
+    # docker:
+    #   - image: circleci/node:12
+    #   - image: circleci/postgres:latest
+    #     environment:
+    #       POSTGRES_HOST: db_test
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #       POSTGRES_DB: mlb_test
+    machine:
+      image: ubuntu-1604:202004-01
     working_directory: ~/mlb-api
     steps:
       - checkout
@@ -24,8 +26,8 @@ jobs:
           name: Install dependencies
           command: npm install
       - run:
-          name: Wait for Postgres to start
-          command: dockerize -wait tcp://db_test:5432 -timeout 1m
+          name: Run dependencies
+          command: docker-compose up -d
       - save_cache:
           paths:
             - node_modules
