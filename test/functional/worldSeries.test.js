@@ -154,21 +154,23 @@ describe('World Series', () => {
 
   describe('Update world series', () => {
     it('Test update world series should return 200', (done) => {
+      const payload = {
+        start_date: new Date(2012, 10 - 1, 23),
+        end_date: new Date(2012, 11 - 1, 2),
+      };
+
       chai
         .request(server)
         .put(`/api/v1/world_series/${firstWorldSeries.id}`)
-        .send({
-          start_date: new Date(2012, 10 - 1, 23),
-          end_date: new Date(2012, 11 - 1, 2),
-        })
+        .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(200);
           expect(response.body.id).to.equal(firstWorldSeries.id);
           expect(response.body.start_date).to.equal(
-            firstWorldSeries.start_date.toISOString()
+            payload.start_date.toISOString()
           );
           expect(response.body.end_date).to.equal(
-            firstWorldSeries.end_date.toISOString()
+            payload.end_date.toISOString()
           );
           expect(response.body.champion_id).to.equal(
             firstWorldSeries.champion_id
