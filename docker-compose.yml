@@ -27,8 +27,8 @@ services:
   db_test:
     image: postgres:latest
     environment: 
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
       POSTGRES_DB: mlb_test
 
   adminer:

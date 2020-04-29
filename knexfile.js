@@ -19,8 +19,8 @@ module.exports = {
     client: 'postgresql',
     connection: {
       host: 'db_test',
-      user: 'postgres',
-      password: 'postgres',
+      user: 'test',
+      password: 'test',
       database: 'mlb_test',
     },
     migrations: {
