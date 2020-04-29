@@ -5,8 +5,8 @@ const expect = require('chai').expect;
 const connection = require('../../src/database/connection');
 const server = require('../../server');
 
-const createTeamTestHelper = require('../createTeamTestHelper');
-const createVenueTestHelper = require('../createVenueTestHelper');
+const createTeamTestHelper = require('../helpers/createTeamTestHelper');
+const createVenueTestHelper = require('../helpers/createVenueTestHelper');
 
 chai.use(chaiHttp);
 
@@ -134,6 +134,8 @@ describe('Teams', () => {
 
   describe('Find team by id', () => {
     it('should find requested team by id', (done) => {
+      const { name, opened, capacity, location, team_id } = firstVenue;
+
       chai
         .request(server)
         .get(`/api/v1/teams/${firstTeam.id}`)
@@ -150,7 +152,12 @@ describe('Teams', () => {
           expect(response.body.number_of_titles).to.equal(
             firstTeam.number_of_titles
           );
-          // expect(response.body).have.property('venue', firstVenue);
+
+          expect(response.body.venue.name).to.equal(name);
+          expect(response.body.venue.opened).to.equal(opened.toISOString());
+          expect(response.body.venue.capacity).to.equal(capacity);
+          expect(response.body.venue.location).to.equal(location);
+          expect(response.body.venue.team_id).to.equal(team_id);
           done();
         });
     });

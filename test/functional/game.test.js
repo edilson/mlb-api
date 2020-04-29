@@ -5,10 +5,10 @@ const expect = require('chai').expect;
 const connection = require('../../src/database/connection');
 const server = require('../../server');
 
-const createTeamTestHelper = require('../createTeamTestHelper');
-const createVenueTestHelper = require('../createVenueTestHelper');
-const createWorldSeriesTestHelper = require('../createWorldSeriesTestHelper');
-const createGameTestHelper = require('../createGameTestHelper');
+const createTeamTestHelper = require('../helpers/createTeamTestHelper');
+const createVenueTestHelper = require('../helpers/createVenueTestHelper');
+const createWorldSeriesTestHelper = require('../helpers/createWorldSeriesTestHelper');
+const createGameTestHelper = require('../helpers/createGameTestHelper');
 
 chai.use(chaiHttp);
 

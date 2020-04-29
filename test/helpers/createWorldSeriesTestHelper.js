@@ -1,4 +1,4 @@
-const connection = require('../src/database/connection');
+const connection = require('../../src/database/connection');
 
 module.exports = async (
   dateStarted,

@@ -5,8 +5,8 @@ const expect = require('chai').expect;
 const connection = require('../../src/database/connection');
 const server = require('../../server');
 
-const createTeamTestHelper = require('../createTeamTestHelper');
-const createVenueTestHelper = require('../createVenueTestHelper');
+const createTeamTestHelper = require('../helpers/createTeamTestHelper');
+const createVenueTestHelper = require('../helpers/createVenueTestHelper');
 
 chai.use(chaiHttp);
 
@@ -94,6 +94,15 @@ describe('Venues', () => {
 
   describe('List venues', () => {
     it('should list venues', (done) => {
+      const {
+        name,
+        established_in,
+        league,
+        division,
+        logo,
+        number_of_titles,
+      } = firstTeam;
+
       chai
         .request(server)
         .get('/api/v1/venues')
@@ -108,7 +117,15 @@ describe('Venues', () => {
           );
           expect(response.body[0].capacity).to.equal(firstVenue.capacity);
           expect(response.body[0].location).to.equal(firstVenue.location);
-          // expect(response.body[0]).have.property('team', firstTeam);
+
+          expect(response.body[0].team.name).to.equal(name);
+          expect(response.body[0].team.established_in).to.equal(established_in);
+          expect(response.body[0].team.league).to.equal(league);
+          expect(response.body[0].team.division).to.equal(division);
+          expect(response.body[0].team.logo).to.equal(logo);
+          expect(response.body[0].team.number_of_titles).to.equal(
+            number_of_titles
+          );
           done();
         });
     });
@@ -127,6 +144,15 @@ describe('Venues', () => {
 
   describe('Find venue by id', () => {
     it('should find venue by id', (done) => {
+      const {
+        name,
+        established_in,
+        league,
+        division,
+        logo,
+        number_of_titles,
+      } = firstTeam;
+
       chai
         .request(server)
         .get(`/api/v1/venues/${firstVenue.id}`)
@@ -139,7 +165,15 @@ describe('Venues', () => {
           );
           expect(response.body.capacity).to.equal(firstVenue.capacity);
           expect(response.body.location).to.equal(firstVenue.location);
-          // expect(response.body).have.property('team', firstTeam);
+
+          expect(response.body.team.name).to.equal(name);
+          expect(response.body.team.established_in).to.equal(established_in);
+          expect(response.body.team.league).to.equal(league);
+          expect(response.body.team.division).to.equal(division);
+          expect(response.body.team.logo).to.equal(logo);
+          expect(response.body.team.number_of_titles).to.equal(
+            number_of_titles
+          );
           done();
         });
     });

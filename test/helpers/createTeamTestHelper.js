@@ -1,5 +1,5 @@
-const connection = require('../src/database/connection');
-const generateUniqueId = require('../src/utils/generateUniqueId');
+const connection = require('../../src/database/connection');
+const generateUniqueId = require('../../src/utils/generateUniqueId');
 
 module.exports = async (
   teamName,
