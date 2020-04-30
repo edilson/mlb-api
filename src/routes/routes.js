@@ -10,11 +10,13 @@ const teamRoutes = require('./teamRoutes');
 const venueRoutes = require('./venueRoutes');
 const worldSeriesRoutes = require('./worldSeriesRoutes');
 const divisionSeriesRoutes = require('./divisionSeriesRoutes');
+const pennantsRoutes = require('./pennantRoutes');
 
 routes.use(teamRoutes);
 routes.use(venueRoutes);
 routes.use(worldSeriesRoutes);
 routes.use(divisionSeriesRoutes);
+routes.use(pennantsRoutes);
 
 routes.post(
   '/register',
