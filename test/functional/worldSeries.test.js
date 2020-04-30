@@ -129,6 +129,15 @@ describe('World Series', () => {
 
   describe('Find world series by id', () => {
     it('should find world series by id', (done) => {
+      const {
+        name,
+        established_in,
+        league,
+        division,
+        logo,
+        number_of_titles,
+      } = firstTeam;
+
       chai
         .request(server)
         .get(`/api/v1/world_series/${firstWorldSeries.id}`)
@@ -146,6 +155,17 @@ describe('World Series', () => {
           );
           expect(response.body.runners_up_id).to.equal(
             firstWorldSeries.runners_up_id
+          );
+
+          expect(response.body.champion.name).to.equal(name);
+          expect(response.body.champion.established_in).to.equal(
+            established_in
+          );
+          expect(response.body.champion.league).to.equal(league);
+          expect(response.body.champion.division).to.equal(division);
+          expect(response.body.champion.logo).to.equal(logo);
+          expect(response.body.champion.number_of_titles).to.equal(
+            number_of_titles
           );
           done();
         });

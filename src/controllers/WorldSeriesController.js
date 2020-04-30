@@ -23,14 +23,14 @@ module.exports = {
 
     const [count] = await connection(WORLD_SERIES_TABLE).count();
 
-    const world_series = await connection(WORLD_SERIES_TABLE)
+    const worldSeries = await connection(WORLD_SERIES_TABLE)
       .limit(LIMIT_PER_PAGE)
       .offset((page - 1) * LIMIT_PER_PAGE)
       .select('*');
 
     response.header('X-Total-Count', count['count']);
 
-    return response.json(world_series);
+    return response.json(worldSeries);
   },
   async update(request, response) {
     const { id } = request.params;
@@ -60,11 +60,16 @@ module.exports = {
   async findById(request, response) {
     const { id } = request.params;
 
-    const world_series = await connection(WORLD_SERIES_TABLE)
+    const worldSeries = await connection(WORLD_SERIES_TABLE)
       .where('id', id)
       .select('*')
       .first();
 
-    return response.json(world_series);
+    worldSeries.champion = await connection('team')
+      .where('id', worldSeries.champion_id)
+      .select('*')
+      .first();
+
+    return response.json(worldSeries);
   },
 };
