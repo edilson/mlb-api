@@ -8,11 +8,12 @@ const server = require('../../server');
 const createTeamTestHelper = require('../helpers/createTeamTestHelper');
 const createVenueTestHelper = require('../helpers/createVenueTestHelper');
 const createWorldSeriesTestHelper = require('../helpers/createWorldSeriesTestHelper');
+const createDivisionSeriesTestHelper = require('../helpers/createDivisionSeriesTestHelper');
 
 chai.use(chaiHttp);
 
 describe('Team Properties', () => {
-  let firstTeam, secondTeam, firstVenue, firstWorldSeries;
+  let firstTeam, secondTeam, firstVenue, firstWorldSeries, firstDivisionSeries;
 
   beforeEach(async () => {
     await connection.migrate.rollback();
@@ -50,6 +51,13 @@ describe('Team Properties', () => {
       firstTeam.id,
       secondTeam.id
     );
+
+    firstDivisionSeries = await createDivisionSeriesTestHelper(
+      new Date(2012, 3 - 1, 19),
+      new Date(2012, 9 - 1, 29),
+      firstTeam.id,
+      '98-63'
+    );
   });
 
   afterEach(async () => {
@@ -77,12 +85,13 @@ describe('Team Properties', () => {
   });
 
   describe('Get World Series', () => {
-    it('Test get team world series should return 200', (done) => {
+    it('should return team world series', (done) => {
       chai
         .request(server)
         .get(`/api/v1/teams/${firstTeam.id}/world_series`)
         .end((request, response) => {
           expect(response.status).to.equal(200);
+          expect(response.body[0].id).to.equal(firstWorldSeries.id);
           expect(response.body[0].start_date).to.equal(
             firstWorldSeries.start_date.toISOString()
           );
@@ -95,6 +104,29 @@ describe('Team Properties', () => {
           expect(response.body[0].runners_up_id).to.equal(
             firstWorldSeries.runners_up_id
           );
+          done();
+        });
+    });
+  });
+
+  describe('Get Division Series', () => {
+    it('should return team division series', (done) => {
+      chai
+        .request(server)
+        .get(`/api/v1/teams/${firstTeam.id}/division_series`)
+        .end((request, response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body[0].id).to.equal(firstDivisionSeries.id);
+          expect(response.body[0].start_date).to.equal(
+            firstDivisionSeries.start_date.toISOString()
+          );
+          expect(response.body[0].end_date).to.equal(
+            firstDivisionSeries.end_date.toISOString()
+          );
+          expect(response.body[0].champion_id).to.equal(
+            firstDivisionSeries.champion_id
+          );
+          expect(response.body[0].record).to.equal(firstDivisionSeries.record);
           done();
         });
     });

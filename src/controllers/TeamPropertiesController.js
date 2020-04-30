@@ -20,4 +20,13 @@ module.exports = {
 
     return response.json(teamWorldSeries);
   },
+  async listDivisionSeries(request, response) {
+    const { id } = request.params;
+
+    const teamDivisionSeries = await connection('division_series')
+      .where('champion_id', id)
+      .select('*');
+
+    return response.json(teamDivisionSeries);
+  },
 };

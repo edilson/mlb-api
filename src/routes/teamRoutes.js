@@ -66,5 +66,9 @@ routes
   );
 routes.get('/teams/:id/venue', TeamPropertiesController.getVenue);
 routes.get('/teams/:id/world_series', TeamPropertiesController.listWorldSeries);
+routes.get(
+  '/teams/:id/division_series',
+  TeamPropertiesController.listDivisionSeries
+);
 
 module.exports = routes;
