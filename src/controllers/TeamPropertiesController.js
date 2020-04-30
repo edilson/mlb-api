@@ -29,4 +29,13 @@ module.exports = {
 
     return response.json(teamDivisionSeries);
   },
+  async listPennants(request, response) {
+    const { id } = request.params;
+
+    const teamPennants = await connection('pennant')
+      .where('champion_id', id)
+      .select('*');
+
+    return response.json(teamPennants);
+  },
 };

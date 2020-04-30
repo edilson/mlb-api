@@ -70,5 +70,6 @@ routes.get(
   '/teams/:id/division_series',
   TeamPropertiesController.listDivisionSeries
 );
+routes.get('/teams/:id/pennants', TeamPropertiesController.listPennants);
 
 module.exports = routes;

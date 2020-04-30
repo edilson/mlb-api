@@ -9,11 +9,17 @@ const createTeamTestHelper = require('../helpers/createTeamTestHelper');
 const createVenueTestHelper = require('../helpers/createVenueTestHelper');
 const createWorldSeriesTestHelper = require('../helpers/createWorldSeriesTestHelper');
 const createDivisionSeriesTestHelper = require('../helpers/createDivisionSeriesTestHelper');
+const createPennantTestHelper = require('../helpers/createPennantTestHelper');
 
 chai.use(chaiHttp);
 
 describe('Team Properties', () => {
-  let firstTeam, secondTeam, firstVenue, firstWorldSeries, firstDivisionSeries;
+  let firstTeam,
+    secondTeam,
+    firstVenue,
+    firstWorldSeries,
+    firstDivisionSeries,
+    firstPennant;
 
   beforeEach(async () => {
     await connection.migrate.rollback();
@@ -57,6 +63,13 @@ describe('Team Properties', () => {
       new Date(2012, 9 - 1, 29),
       firstTeam.id,
       '98-63'
+    );
+
+    firstPennant = await createPennantTestHelper(
+      new Date(2015, 10 - 1, 12),
+      new Date(2015, 10 - 1, 20),
+      secondTeam.id,
+      firstTeam.id
     );
   });
 
@@ -127,6 +140,31 @@ describe('Team Properties', () => {
             firstDivisionSeries.champion_id
           );
           expect(response.body[0].record).to.equal(firstDivisionSeries.record);
+          done();
+        });
+    });
+  });
+
+  describe('Get Pennants', () => {
+    it('should return team pennants', (done) => {
+      chai
+        .request(server)
+        .get(`/api/v1/teams/${secondTeam.id}/pennants`)
+        .end((request, response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body[0].id).to.equal(firstPennant.id);
+          expect(response.body[0].start_date).to.equal(
+            firstPennant.start_date.toISOString()
+          );
+          expect(response.body[0].end_date).to.equal(
+            firstPennant.end_date.toISOString()
+          );
+          expect(response.body[0].champion_id).to.equal(
+            firstPennant.champion_id
+          );
+          expect(response.body[0].runners_up_id).to.equal(
+            firstPennant.runners_up_id
+          );
           done();
         });
     });
