@@ -55,7 +55,7 @@ module.exports = {
       .where({ world_series_id: world_series_id, id: game_id })
       .update(request.body);
 
-    const updated_game = await connection('game')
+    const updatedGame = await connection('game')
       .where({
         world_series_id: world_series_id,
         id: game_id,
@@ -63,7 +63,7 @@ module.exports = {
       .select('*')
       .first();
 
-    return response.json(updated_game);
+    return response.json(updatedGame);
   },
   async delete(request, response) {
     const { world_series_id, game_id } = request.params;

@@ -56,12 +56,12 @@ module.exports = {
 
     await connection(VENUE_TABLE).where('id', id).update(request.body);
 
-    const updated_venue = await connection(VENUE_TABLE)
+    const updatedVenue = await connection(VENUE_TABLE)
       .where('id', id)
       .select('*')
       .first();
 
-    return response.json(updated_venue);
+    return response.json(updatedVenue);
   },
   async delete(request, response) {
     const { id } = request.params;

@@ -50,12 +50,12 @@ module.exports = {
 
     await connection(TEAM_TABLE).where('id', id).update(request.body);
 
-    const updated_team = await connection(TEAM_TABLE)
+    const updatedTeam = await connection(TEAM_TABLE)
       .where('id', id)
       .select('*')
       .first();
 
-    return response.json(updated_team);
+    return response.json(updatedTeam);
   },
   async delete(request, response) {
     const { id } = request.params;
