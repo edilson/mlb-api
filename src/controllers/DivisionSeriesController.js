@@ -67,6 +67,11 @@ module.exports = {
       .select('*')
       .first();
 
+    divisionSeries.champion = await connection('team')
+      .where('id', divisionSeries.champion_id)
+      .select('*')
+      .first();
+
     return response.json(divisionSeries);
   },
 };

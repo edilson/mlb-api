@@ -94,6 +94,15 @@ describe('Division Series', () => {
 
   describe('Get Division Series by id', () => {
     it('should return the request division series', (done) => {
+      const {
+        name,
+        established_in,
+        league,
+        division,
+        logo,
+        number_of_titles,
+      } = firstTeam;
+
       chai
         .request(server)
         .get(`/api/v1/division_series/${firstDivisionSeries.id}`)
@@ -109,6 +118,17 @@ describe('Division Series', () => {
             firstDivisionSeries.champion_id
           );
           expect(response.body.record).to.equal(firstDivisionSeries.record);
+
+          expect(response.body.champion.name).to.equal(name);
+          expect(response.body.champion.established_in).to.equal(
+            established_in
+          );
+          expect(response.body.champion.league).to.equal(league);
+          expect(response.body.champion.division).to.equal(division);
+          expect(response.body.champion.logo).to.equal(logo);
+          expect(response.body.champion.number_of_titles).to.equal(
+            number_of_titles
+          );
           done();
         });
     });
