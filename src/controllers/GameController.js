@@ -11,7 +11,7 @@ module.exports = {
       loser_score,
     } = request.body;
 
-    const { world_series_id } = request.params;
+    const { world_series_id, pennant_id } = request.params;
 
     await connection('game').insert({
       event_date,
@@ -21,6 +21,7 @@ module.exports = {
       winner_score,
       loser_score,
       world_series_id,
+      pennant_id,
     });
 
     return response.status(201).json({
@@ -31,6 +32,7 @@ module.exports = {
       winner_score,
       loser_score,
       world_series_id,
+      pennant_id,
     });
   },
   async list(request, response) {

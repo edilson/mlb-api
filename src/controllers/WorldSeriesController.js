@@ -64,10 +64,6 @@ module.exports = {
       .select('*')
       .first();
 
-    worldSeries.games = await connection('game')
-      .where('world_series_id', worldSeries.id)
-      .select('*');
-
     return response.json(worldSeries);
   },
 };
