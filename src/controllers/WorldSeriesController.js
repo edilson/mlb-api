@@ -37,18 +37,12 @@ module.exports = {
 
     await connection(WORLD_SERIES_TABLE).where('id', id).update(request.body);
 
-    const worldSeriesToUpdate = await connection(WORLD_SERIES_TABLE)
+    const worldSeriesUpdated = await connection(WORLD_SERIES_TABLE)
       .where('id', id)
       .select('*')
       .first();
 
-    if (worldSeriesToUpdate.start_date > worldSeriesToUpdate.end_date) {
-      return response
-        .status(400)
-        .json({ message: 'end_date must be higher than start_date' });
-    }
-
-    return response.json(worldSeriesToUpdate);
+    return response.json(worldSeriesUpdated);
   },
   async delete(request, response) {
     const { id } = request.params;
@@ -69,6 +63,10 @@ module.exports = {
       .where('id', worldSeries.champion_id)
       .select('*')
       .first();
+
+    worldSeries.games = await connection('game')
+      .where('world_series_id', worldSeries.id)
+      .select('*');
 
     return response.json(worldSeries);
   },

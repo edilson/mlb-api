@@ -37,18 +37,12 @@ module.exports = {
 
     await connection(PENNANT_TABLE).where('id', id).update(request.body);
 
-    const pennantToUpdate = await connection(PENNANT_TABLE)
+    const pennantUpdated = await connection(PENNANT_TABLE)
       .where('id', id)
       .select('*')
       .first();
 
-    if (pennantToUpdate.start_date > pennantToUpdate.end_date) {
-      return response
-        .status(400)
-        .json({ message: 'end_date must be higher than start_date' });
-    }
-
-    return response.json(pennantToUpdate);
+    return response.json(pennantUpdated);
   },
   async delete(request, response) {
     const { id } = request.params;
