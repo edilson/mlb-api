@@ -24,6 +24,8 @@ jobs:
           name: Install dependencies
           command: npm install
       - run:
+          command: cp .env.example .env
+      - run:
           name: Run dependencies
           command: docker-compose up -d
       - save_cache:
