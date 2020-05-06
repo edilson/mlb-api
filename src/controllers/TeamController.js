@@ -39,7 +39,8 @@ module.exports = {
     const teams = await connection(TEAM_TABLE)
       .select('*')
       .limit(LIMIT_PER_PAGE)
-      .offset((page - 1) * LIMIT_PER_PAGE);
+      .offset((page - 1) * LIMIT_PER_PAGE)
+      .orderBy('name');
 
     response.header('X-Total-Count', count['count']);
 
