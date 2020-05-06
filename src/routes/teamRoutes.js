@@ -4,11 +4,14 @@ const { celebrate, Segments, Joi } = require('celebrate');
 const TeamController = require('../controllers/TeamController');
 const TeamPropertiesController = require('../controllers/TeamPropertiesController');
 
+const jwtAuth = require('../config/auth-middleware');
+
 const routes = express.Router();
 
 routes
   .route('/teams')
   .post(
+    jwtAuth(),
     celebrate({
       [Segments.BODY]: Joi.object().keys({
         name: Joi.string().required(),
@@ -41,6 +44,7 @@ routes
     TeamController.findById
   )
   .put(
+    jwtAuth(),
     celebrate({
       [Segments.PARAMS]: Joi.object().keys({
         id: Joi.string().required(),
@@ -57,6 +61,7 @@ routes
     TeamController.update
   )
   .delete(
+    jwtAuth(),
     celebrate({
       [Segments.PARAMS]: Joi.object().keys({
         id: Joi.string().required(),

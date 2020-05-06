@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
+const jwt = require('jsonwebtoken');
 
 const connection = require('../../src/database/connection');
 const server = require('../../server');
@@ -11,11 +12,18 @@ const createVenueTestHelper = require('../helpers/createVenueTestHelper');
 chai.use(chaiHttp);
 
 describe('Venues', () => {
-  let firstTeam, secondTeam, firstVenue;
+  let firstTeam, secondTeam, firstVenue, user, token;
 
   beforeEach(async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
+
+    user = {
+      email: 'edilson.silva00@hotmail.com',
+      senha: '123ab',
+    };
+
+    token = await jwt.sign({ user }, process.env.SECRET, { expiresIn: '24h' });
 
     firstTeam = await createTeamTestHelper(
       'first-team',
@@ -61,6 +69,7 @@ describe('Venues', () => {
       chai
         .request(server)
         .post('/api/v1/venues')
+        .set('Authorization', token)
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(201);
@@ -69,24 +78,6 @@ describe('Venues', () => {
           expect(response.body.capacity).to.equal(payload.capacity);
           expect(response.body.location).to.equal(payload.location);
           expect(response.body.team_id).to.equal(payload.team_id);
-          done();
-        });
-    });
-
-    it('Test create venue with invalid data should return 400', (done) => {
-      const invalidPayload = {
-        name: 'test stadium',
-        opened: new Date(1905, 3 - 1, 12),
-        capacity: 30590,
-        location: 'some awesome',
-      };
-
-      chai
-        .request(server)
-        .post('/api/v1/venues')
-        .send(invalidPayload)
-        .end((request, response) => {
-          expect(response.status).to.equal(400);
           done();
         });
     });
@@ -190,6 +181,7 @@ describe('Venues', () => {
       chai
         .request(server)
         .put(`/api/v1/venues/${firstVenue.id}`)
+        .set('Authorization', token)
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(200);
@@ -201,31 +193,18 @@ describe('Venues', () => {
           done();
         });
     });
+  });
 
-    it('Test update with invalid data should return 400', (done) => {
+  describe('Delete venue', () => {
+    it('Test delete venue should return 204', (done) => {
       chai
         .request(server)
-        .put(`/api/v1/venues/${firstVenue.id}`)
-        .send({ name: 'some' })
+        .delete(`/api/v1/venues/${firstVenue.id}`)
+        .set('Authorization', token)
         .end((request, response) => {
-          expect(response.status).to.equal(400);
-          expect(response.body.message).to.equal(
-            '"name" length must be at least 7 characters long'
-          );
+          expect(response.status).to.equal(204);
           done();
         });
-    });
-
-    describe('Delete venue', () => {
-      it('Test delete venue should return 204', (done) => {
-        chai
-          .request(server)
-          .delete(`/api/v1/venues/${firstVenue.id}`)
-          .end((request, response) => {
-            expect(response.status).to.equal(204);
-            done();
-          });
-      });
     });
   });
 });

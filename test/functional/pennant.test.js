@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
+const jwt = require('jsonwebtoken');
 
 const connection = require('../../src/database/connection');
 const server = require('../../server');
@@ -11,11 +12,18 @@ const createPennantTestHelper = require('../helpers/createPennantTestHelper');
 chai.use(chaiHttp);
 
 describe('Pennants', () => {
-  let firstTeam, secondTeam, firstPennant;
+  let firstTeam, secondTeam, firstPennant, user, token;
 
   beforeEach(async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
+
+    user = {
+      email: 'edilson.silva00@hotmail.com',
+      senha: '123ab',
+    };
+
+    token = await jwt.sign({ user }, process.env.SECRET, { expiresIn: '24h' });
 
     firstTeam = await createTeamTestHelper(
       'first-team',
@@ -59,6 +67,7 @@ describe('Pennants', () => {
       chai
         .request(server)
         .post('/api/v1/pennants')
+        .set('Authorization', token)
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(201);
@@ -70,22 +79,6 @@ describe('Pennants', () => {
           );
           expect(response.body.champion_id).to.equal(payload.champion_id);
           expect(response.body.runners_up_id).to.equal(payload.runners_up_id);
-          done();
-        });
-    });
-
-    it('should return 400 with invalid data', (done) => {
-      const invalidPayload = {
-        start_date: new Date(2014, 10 - 1, 29),
-        end_date: new Date(2014, 11 - 1, 5),
-      };
-
-      chai
-        .request(server)
-        .post('/api/v1/pennants')
-        .send(invalidPayload)
-        .end((request, response) => {
-          expect(response.status).to.equal(400);
           done();
         });
     });
@@ -180,6 +173,7 @@ describe('Pennants', () => {
       chai
         .request(server)
         .put(`/api/v1/pennants/${firstPennant.id}`)
+        .set('Authorization', token)
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(200);
@@ -204,6 +198,7 @@ describe('Pennants', () => {
       chai
         .request(server)
         .delete(`/api/v1/pennants/${firstPennant.id}`)
+        .set('Authorization', token)
         .end((request, response) => {
           expect(response.status).to.equal(204);
           done();

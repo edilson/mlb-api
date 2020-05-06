@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
+const jwt = require('jsonwebtoken');
 
 const connection = require('../../src/database/connection');
 const server = require('../../server');
@@ -13,11 +14,24 @@ const createGameTestHelper = require('../helpers/createGameTestHelper');
 chai.use(chaiHttp);
 
 describe('Games', () => {
-  let firstTeam, secondTeam, firstVenue, firstWorldSeries, firstGame;
+  let firstTeam,
+    secondTeam,
+    firstVenue,
+    firstWorldSeries,
+    firstGame,
+    user,
+    token;
 
   beforeEach(async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
+
+    user = {
+      email: 'edilson.silva00@hotmail.com',
+      senha: '123ab',
+    };
+
+    token = await jwt.sign({ user }, process.env.SECRET, { expiresIn: '24h' });
 
     firstTeam = await createTeamTestHelper(
       'first-team',
@@ -80,6 +94,7 @@ describe('Games', () => {
       chai
         .request(server)
         .post(`/api/v1/world_series/${firstWorldSeries.id}/games`)
+        .set('Authorization', token)
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(201);
@@ -164,6 +179,7 @@ describe('Games', () => {
         .put(
           `/api/v1/world_series/${firstWorldSeries.id}/games/${firstGame.id}`
         )
+        .set('Authorization', token)
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(200);
@@ -190,6 +206,7 @@ describe('Games', () => {
         .delete(
           `/api/v1/world_series/${firstWorldSeries.id}/games/${firstGame.id}`
         )
+        .set('Authorization', token)
         .end((request, response) => {
           expect(response.status).to.equal(204);
           done();

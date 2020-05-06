@@ -3,6 +3,8 @@ const { celebrate, Segments, Joi } = require('celebrate');
 
 const WorldSeriesController = require('../controllers/WorldSeriesController');
 
+const jwtAuth = require('../config/auth-middleware');
+
 const gameRoutes = require('./gameRoutes');
 
 const routes = express.Router();
@@ -10,6 +12,7 @@ const routes = express.Router();
 routes
   .route('/world_series')
   .post(
+    jwtAuth(),
     celebrate({
       [Segments.BODY]: Joi.object().keys({
         start_date: Joi.date().iso().required(),
@@ -44,6 +47,7 @@ routes
     WorldSeriesController.findById
   )
   .put(
+    jwtAuth(),
     celebrate({
       [Segments.PARAMS]: Joi.object().keys({
         id: Joi.number().integer().required(),
@@ -58,6 +62,7 @@ routes
     WorldSeriesController.update
   )
   .delete(
+    jwtAuth(),
     celebrate({
       [Segments.PARAMS]: Joi.object().keys({
         id: Joi.number().integer().required(),

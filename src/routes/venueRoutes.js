@@ -3,11 +3,14 @@ const { celebrate, Segments, Joi } = require('celebrate');
 
 const VenueController = require('../controllers/VenueController');
 
+const jwtAuth = require('../config/auth-middleware');
+
 const routes = express.Router();
 
 routes
   .route('/venues')
   .post(
+    jwtAuth(),
     celebrate({
       [Segments.BODY]: Joi.object().keys({
         name: Joi.string().required().min(7),
@@ -39,6 +42,7 @@ routes
     VenueController.findById
   )
   .put(
+    jwtAuth(),
     celebrate({
       [Segments.PARAMS]: Joi.object().keys({
         id: Joi.number().integer().required(),
@@ -54,6 +58,7 @@ routes
     VenueController.update
   )
   .delete(
+    jwtAuth(),
     celebrate({
       [Segments.PARAMS]: Joi.object().keys({
         id: Joi.number().integer().required(),

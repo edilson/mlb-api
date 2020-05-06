@@ -3,6 +3,8 @@ const { celebrate, Segments, Joi } = require('celebrate');
 
 const PennantController = require('../controllers/PennantController');
 
+const jwtAuth = require('../config/auth-middleware');
+
 const gameRoutes = require('./gameRoutes');
 
 const routes = express.Router();
@@ -10,6 +12,7 @@ const routes = express.Router();
 routes
   .route('/pennants')
   .post(
+    jwtAuth(),
     celebrate({
       [Segments.BODY]: Joi.object().keys({
         start_date: Joi.date().iso().required(),
@@ -44,6 +47,7 @@ routes
     PennantController.findById
   )
   .put(
+    jwtAuth(),
     celebrate({
       [Segments.PARAMS]: Joi.object().keys({
         id: Joi.number().integer().required(),
@@ -58,6 +62,7 @@ routes
     PennantController.update
   )
   .delete(
+    jwtAuth(),
     celebrate({
       [Segments.PARAMS]: Joi.object().keys({
         id: Joi.number().integer().required(),

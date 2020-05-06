@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
+const jwt = require('jsonwebtoken');
 
 const connection = require('../../src/database/connection');
 const server = require('../../server');
@@ -11,11 +12,18 @@ const createVenueTestHelper = require('../helpers/createVenueTestHelper');
 chai.use(chaiHttp);
 
 describe('Teams', () => {
-  let firstTeam, secondTeam, firstVenue;
+  let firstTeam, secondTeam, firstVenue, user, token;
 
   beforeEach(async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
+
+    user = {
+      email: 'edilson.silva00@hotmail.com',
+      senha: '123ab',
+    };
+
+    token = await jwt.sign({ user }, process.env.SECRET, { expiresIn: '24h' });
 
     firstTeam = await createTeamTestHelper(
       'first-team',
@@ -60,6 +68,7 @@ describe('Teams', () => {
       chai
         .request(server)
         .post('/api/v1/teams')
+        .set('Authorization', token)
         .send(payload)
         .end((request, response) => {
           expect(response.status).to.equal(201);
@@ -71,26 +80,6 @@ describe('Teams', () => {
           expect(response.body.number_of_titles).to.equal(
             payload.number_of_titles
           );
-          done();
-        });
-    });
-
-    it('Test create team with invalid data should return 400', (done) => {
-      const invalidPayload = {
-        name: 'test-team',
-        established_in: 1870,
-        league: 'testing league',
-        division: 'test division',
-        logo: 'some logo',
-        number_of_titles: '',
-      };
-
-      chai
-        .request(server)
-        .post('/api/v1/teams')
-        .send(invalidPayload)
-        .end((request, response) => {
-          expect(response.status).to.equal(400);
           done();
         });
     });
@@ -168,6 +157,7 @@ describe('Teams', () => {
       chai
         .request(server)
         .put(`/api/v1/teams/${firstTeam.id}`)
+        .set('Authorization', token)
         .send({ name: 'first-team-updated' })
         .end((request, response) => {
           expect(response.status).to.equal(200);
@@ -185,20 +175,6 @@ describe('Teams', () => {
           done();
         });
     });
-
-    it('Test update team with invalid data should return 400', (done) => {
-      chai
-        .request(server)
-        .put(`/api/v1/teams/${firstTeam.id}`)
-        .send({ name: 'first-team-updated', established_in: 1870 })
-        .end((request, response) => {
-          expect(response.status).to.equal(400);
-          expect(response.body.message).to.equal(
-            '"established_in" must be larger than or equal to 1871'
-          );
-          done();
-        });
-    });
   });
 
   describe('Delete team', () => {
@@ -206,6 +182,7 @@ describe('Teams', () => {
       chai
         .request(server)
         .delete(`/api/v1/teams/${secondTeam.id}`)
+        .set('Authorization', token)
         .end((request, response) => {
           expect(response.status).to.equal(204);
           done();

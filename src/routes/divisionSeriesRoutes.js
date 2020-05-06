@@ -3,11 +3,14 @@ const { celebrate, Segments, Joi } = require('celebrate');
 
 const DivisionSeriesController = require('../controllers/DivisionSeriesController');
 
+const jwtAuth = require('../config/auth-middleware');
+
 const routes = express.Router();
 
 routes
   .route('/division_series')
   .post(
+    jwtAuth(),
     celebrate({
       [Segments.BODY]: Joi.object().keys({
         start_date: Joi.date().iso().required(),
@@ -42,6 +45,7 @@ routes
     DivisionSeriesController.findById
   )
   .put(
+    jwtAuth(),
     celebrate({
       [Segments.BODY]: Joi.object().keys({
         start_date: Joi.date().iso(),
@@ -56,6 +60,7 @@ routes
     DivisionSeriesController.update
   )
   .delete(
+    jwtAuth(),
     celebrate({
       [Segments.PARAMS]: Joi.object().keys({
         id: Joi.number().integer().required(),
