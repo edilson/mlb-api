@@ -6,6 +6,7 @@ const routers = require('../routes/routes');
 
 const app = express();
 
+app.disable('x-powered-by');
 app.use(cors());
 app.use(express.json());
 app.use('/api/v1', routers);

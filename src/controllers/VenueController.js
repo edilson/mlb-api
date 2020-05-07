@@ -31,7 +31,8 @@ module.exports = {
     const venues = await connection(VENUE_TABLE)
       .limit(LIMIT_PER_PAGE)
       .offset((page - 1) * LIMIT_PER_PAGE)
-      .select('*');
+      .select('*')
+      .orderBy('name');
 
     const venuesWithTeam = await venues.reduce(
       (promise, element) =>
