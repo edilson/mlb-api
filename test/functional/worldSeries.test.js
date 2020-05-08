@@ -98,11 +98,35 @@ describe('World Series', () => {
           expect(response.body[0].end_date).to.equal(
             firstWorldSeries.end_date.toISOString()
           );
-          expect(response.body[0].champion_id).to.equal(
-            firstWorldSeries.champion_id
+          expect(response.body[0]).has.not.property('champion_id');
+          expect(response.body[0]).has.not.property('runners_up_id');
+
+          expect(response.body[0].champion.name).to.equal(firstTeam.name);
+          expect(response.body[0].champion.established_in).to.equal(
+            firstTeam.established_in
           );
-          expect(response.body[0].runners_up_id).to.equal(
-            firstWorldSeries.runners_up_id
+          expect(response.body[0].champion.league).to.equal(firstTeam.league);
+          expect(response.body[0].champion.division).to.equal(
+            firstTeam.division
+          );
+          expect(response.body[0].champion.logo).to.equal(firstTeam.logo);
+          expect(response.body[0].champion.number_of_titles).to.equal(
+            firstTeam.number_of_titles
+          );
+
+          expect(response.body[0].runners_up.name).to.equal(secondTeam.name);
+          expect(response.body[0].runners_up.established_in).to.equal(
+            secondTeam.established_in
+          );
+          expect(response.body[0].runners_up.league).to.equal(
+            secondTeam.league
+          );
+          expect(response.body[0].runners_up.division).to.equal(
+            secondTeam.division
+          );
+          expect(response.body[0].runners_up.logo).to.equal(secondTeam.logo);
+          expect(response.body[0].runners_up.number_of_titles).to.equal(
+            secondTeam.number_of_titles
           );
           done();
         });
@@ -122,15 +146,6 @@ describe('World Series', () => {
 
   describe('Find world series by id', () => {
     it('should find world series by id', (done) => {
-      const {
-        name,
-        established_in,
-        league,
-        division,
-        logo,
-        number_of_titles,
-      } = firstTeam;
-
       chai
         .request(server)
         .get(`/api/v1/world_series/${firstWorldSeries.id}`)
@@ -143,22 +158,31 @@ describe('World Series', () => {
           expect(response.body.end_date).to.equal(
             firstWorldSeries.end_date.toISOString()
           );
-          expect(response.body.champion_id).to.equal(
-            firstWorldSeries.champion_id
+          expect(response.body).has.not.property('champion_id');
+          expect(response.body).has.not.property('runners_up_id');
+
+          expect(response.body.champion.name).to.equal(firstTeam.name);
+          expect(response.body.champion.established_in).to.equal(
+            firstTeam.established_in
           );
-          expect(response.body.runners_up_id).to.equal(
-            firstWorldSeries.runners_up_id
+          expect(response.body.champion.league).to.equal(firstTeam.league);
+          expect(response.body.champion.division).to.equal(firstTeam.division);
+          expect(response.body.champion.logo).to.equal(firstTeam.logo);
+          expect(response.body.champion.number_of_titles).to.equal(
+            firstTeam.number_of_titles
           );
 
-          expect(response.body.champion.name).to.equal(name);
-          expect(response.body.champion.established_in).to.equal(
-            established_in
+          expect(response.body.runners_up.name).to.equal(secondTeam.name);
+          expect(response.body.runners_up.established_in).to.equal(
+            secondTeam.established_in
           );
-          expect(response.body.champion.league).to.equal(league);
-          expect(response.body.champion.division).to.equal(division);
-          expect(response.body.champion.logo).to.equal(logo);
-          expect(response.body.champion.number_of_titles).to.equal(
-            number_of_titles
+          expect(response.body.runners_up.league).to.equal(secondTeam.league);
+          expect(response.body.runners_up.division).to.equal(
+            secondTeam.division
+          );
+          expect(response.body.runners_up.logo).to.equal(secondTeam.logo);
+          expect(response.body.runners_up.number_of_titles).to.equal(
+            secondTeam.number_of_titles
           );
           done();
         });
