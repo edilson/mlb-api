@@ -108,6 +108,7 @@ describe('Venues', () => {
           );
           expect(response.body[0].capacity).to.equal(firstVenue.capacity);
           expect(response.body[0].location).to.equal(firstVenue.location);
+          expect(response.body[0]).has.not.property('team_id');
 
           expect(response.body[0].team.name).to.equal(name);
           expect(response.body[0].team.established_in).to.equal(established_in);

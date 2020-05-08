@@ -48,9 +48,14 @@ module.exports = {
       Promise.resolve([])
     );
 
+    const venuesWithoutTeamId = venuesWithTeam.map((element) => {
+      delete element.team_id;
+      return element;
+    });
+
     response.header('X-Total-Count', count['count']);
 
-    return response.json(venuesWithTeam);
+    return response.json(venuesWithoutTeamId);
   },
   async update(request, response) {
     const { id } = request.params;
