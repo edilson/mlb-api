@@ -84,6 +84,8 @@ module.exports = {
       .select('*')
       .first();
 
+    delete venue.team_id;
+
     return response.json(venue);
   },
 };
