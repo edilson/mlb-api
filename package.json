@@ -19,7 +19,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.13",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "pg": "^8.0.0"
   },
   "devDependencies": {
